@@ -774,7 +774,7 @@ class xray extends module
                         $files = array();
                         while (false !== ($entry = readdir($handle))) {
                             if (preg_match('/^cycle/is', $entry)) {
-                                $title = preg_replace('/\.(php|py)$/', '', $entry);
+                                $title = preg_replace('/\.php$/', '', $entry);
                                 if (!isset($seen[$title])) {
                                     $res[] = array('TITLE' => $title . 'Run');
                                 }
