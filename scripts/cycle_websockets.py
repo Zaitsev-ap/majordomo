@@ -1,3 +1,4 @@
+debug = 0
 import logging
 import asyncio
 import websockets
@@ -57,8 +58,8 @@ class ThreadSafeDict:
             return list(self._dict.items())
 
 # Создаем логгер
-logger = logging.getLogger('my_logger')
-logger.setLevel(logging.DEBUG)
+if (debug) : logger = logging.getLogger('my_logger')
+if (debug) : logger.setLevel(logging.DEBUG)
 
 def get_log_filename():
     current_datetime = datetime.now()
@@ -77,8 +78,8 @@ console_formatter = logging.Formatter('[%(levelname)s]: %(message)s')
 console_handler.setFormatter(console_formatter)
 
 # Добавляем обработчики к логгеру
-logger.addHandler(file_handler)
-logger.addHandler(console_handler)
+if (debug) : logger.addHandler(file_handler)
+if (debug) : logger.addHandler(console_handler)
 
 # Берем конфиг из config.php
 with open(root_path+'/config.php', 'r') as file:
@@ -98,7 +99,7 @@ WEBSOCKETS_PORT = config["WEBSOCKETS_PORT"]
 
 # Время старта
 started = datetime.now()
-logger.info("Cycle started")
+if (debug) : logger.info("Cycle started")
 
 # Словарь для хранения всех подключенных клиентов
 clients = ThreadSafeDict()
@@ -110,7 +111,7 @@ async def sendData(client, action, data):
     message = {"action":action,"data":json.dumps(data, default=list)}
     data = json.dumps(message)
     key = str(client.id)
-    logger.debug(f"{key} <- {data}")
+    if (debug) : logger.debug(f"{key} <- {data}")
     clients[key]['outPacket'] += 1
     clients[key]['outBytes'] += len(data)
     clients[key]['updated'] = datetime.now()
@@ -211,7 +212,7 @@ async def subscribeAction(client,data):
                 clients[str(client.id)]['scenes'][name].add(prop['STATE_ID'])
         await sendData(client,"subscribed",data)
     else:
-        logger.warning(data)
+        if (debug) : logger.warning(data)
 
 def updateStates():
     cacheStates.clear()
@@ -227,7 +228,7 @@ async def postPropertyAction(client,data):
         #logger.debug(data)
     for prop in data:
         if isinstance(prop, str): 
-            logger.warning(prop)
+            if (debug) : logger.warning(prop)
             continue
         #logger.debug(prop)
         name = prop["NAME"].lower()
@@ -273,7 +274,7 @@ async def postPropertyAction(client,data):
                 await sendData(subscriber['client'],"states",data)
 
 async def postEventAction(client,data):
-    logger.debug("Event: "+str(data["NAME"])+" - "+str(data["VALUE"]))
+    if (debug) : logger.debug("Event: "+str(data["NAME"])+" - "+str(data["VALUE"]))
     for key,subscriber in clients.items():
        if key == str(client.id):
             continue
@@ -286,13 +287,13 @@ async def handle_client(websocket, path):
     try:
         # Добавляем клиента в список подключенных
         clients[str(websocket.id)]={'client':websocket, 'connected': datetime.now(),'updated':datetime.now(), 'events':[], 'properties':[],'devices':{},'commands':{},'scenes':{},'inPacket':0,'outPacket':0,'inBytes':0,'outBytes':0}
-        logger.info(f"Подключился клиент - {websocket.id}")
+        if (debug) : logger.info(f"Подключился клиент - {websocket.id}")
         setGlobal("WSClientsTotal", len(clients))
         
         # Ожидаем сообщения от клиента
         async for message in websocket:
             key = str(websocket.id)
-            logger.debug(f"{key} -> {message} - {path}")
+            if (debug) : logger.debug(f"{key} -> {message} - {path}")
             clients[key]['updated'] = datetime.now()
             clients[key]['inPacket'] += 1
             clients[key]['inBytes'] += len(message)
@@ -311,13 +312,13 @@ async def handle_client(websocket, path):
             elif (data['action'] == "PostEvent"):
                 await postEventAction(websocket,data['data'])
             else:
-                logger.warning(f"Получено сообщение: {message} - {path}")
+                if (debug) : logger.warning(f"Получено сообщение: {message} - {path}")
             
                 
     except websockets.exceptions.ConnectionClosed as e:
-        logger.info(f"Соединение закрыто {websocket.id}{e}", exc_info=True)
+        if (debug) : logger.info(f"Соединение закрыто {websocket.id}{e}", exc_info=True)
     except Exception as e:
-        logger.error(f'Произошло исключение: {e}', exc_info=True)
+        if (debug) : logger.error(f'Произошло исключение: {e}', exc_info=True)
     finally:
         del clients[str(websocket.id)]
         setGlobal("WSClientsTotal", len(clients))
@@ -325,32 +326,32 @@ async def handle_client(websocket, path):
 async def updateStatus():
     cycleName = 'cycle_websocketsRun'
     while True:
-        logger.debug("Ping-pong")
+        if (debug) : logger.debug("Ping-pong")
         for key,subscriber in clients.items():
             if subscriber['client'].remote_address[0] == '127.0.0.1':
                 continue
             try:
                 pong_waiter = await subscriber['client'].ping()
                 latency = await pong_waiter
-                logger.debug("Client "+key+" latency - "+str(latency)+"ms")
+                if (debug) : logger.debug("Client "+key+" latency - "+str(latency)+"ms")
             except websockets.exceptions.ConnectionClosedError:
-                logger.info(f"Соединение закрыто {key}")
+                if (debug) : logger.info(f"Соединение закрыто {key}")
             except Exception as e:
-                logger.info(f'Произошло исключение ping-pong (id:{key}): {e}', exc_info=True)
-        logger.debug("UpdateStatus")
+                if (debug) : logger.info(f'Произошло исключение ping-pong (id:{key}): {e}', exc_info=True)
+        if (debug) : logger.debug("UpdateStatus")
         ts = int(time.time())
         try:
             setGlobal(cycleName, ts)
         except Exception as e:
-            logger.error(f'Произошло исключение: {e}', exc_info=True)
-        await asyncio.sleep(15)
+            if (debug) : logger.error(f'Произошло исключение: {e}', exc_info=True)
+        await asyncio.sleep(55)
 
 # Создаем асинхронный цикл событий
 async def main():
     # Создаем задачу для периодического выполнения updateStatus()
     task = asyncio.create_task(updateStatus())
     # Создаем WebSocket сервер
-    logger.info(f'Start server on {WEBSOCKETS_PORT}')
+    if (debug) : logger.info(f'Start server on {WEBSOCKETS_PORT}')
     server = await websockets.serve(handle_client, "0.0.0.0", WEBSOCKETS_PORT, ping_interval=None)
 
     await asyncio.gather(task, server.wait_closed())

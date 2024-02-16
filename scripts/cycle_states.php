@@ -46,7 +46,8 @@ if (isset($_GET['once'])) {
     echo date("H:i:s") . " running " . basename(__FILE__) . PHP_EOL;
 
     while (1) {
-        if (time() - $checked_time > 10) {
+        //if (time() - $checked_time > 10) {
+        if (time() - $checked_time > 55) {
             setGlobal((str_replace('.php', '', basename(__FILE__))) . 'Run', time(), 1);
             $checked_time = time();
             // saveToCache("MJD:$cycleVarName", $checked_time);
