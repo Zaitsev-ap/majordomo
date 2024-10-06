@@ -15,6 +15,8 @@ $ctl = new control_modules();
 $checked_time = 0;
 setGlobal((str_replace('.php', '', basename(__FILE__))).'Run', time(), 1);
 $cycleVarName='ThisComputer.'.str_replace('.php', '', basename(__FILE__)).'Run';
+$cycleVarNameRUN=str_replace('.php', '', basename(__FILE__)) . "Run";
+echo $cycleVarNameRUN;
 
 echo date("H:i:s") . " running " . basename(__FILE__) . "\n";
 SQLExec("DELETE FROM safe_execs");
