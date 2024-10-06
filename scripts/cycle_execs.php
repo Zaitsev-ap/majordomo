@@ -14,7 +14,7 @@ include_once(DIR_MODULES . "control_modules/control_modules.class.php");
 $ctl = new control_modules();
 $checked_time = 0;
 setGlobal((str_replace('.php', '', basename(__FILE__))).'Run', time(), 1);
-$cycleVarName='ThisComputer.'.str_replace('.php', '', basename(__FILE__)).'Run';
+//$cycleVarName='ThisComputer.'.str_replace('.php', '', basename(__FILE__)).'Run';
 $cycleVarNameRUN=str_replace('.php', '', basename(__FILE__)) . "Run";
 
 echo date("H:i:s") . " running " . basename(__FILE__) . "\n";
