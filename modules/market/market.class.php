@@ -392,7 +392,7 @@ class market extends module
             $data = json_decode($result);
         }
 
-        if (!isset($data->PLUGINS) || !is_array($data->PLUGINS)) {
+        if (empty($data->PLUGINS) || !is_array($data->PLUGINS)) {
             $out['ERR'] = 1;
         } else {
             $this->can_be_updated = array();

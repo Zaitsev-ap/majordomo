@@ -171,7 +171,7 @@ class application extends module
         $terminals = getAllTerminals(-1, 'TITLE');
         $total = count($terminals);
         for ($i = 0; $i < $total; $i++) {
-            if ($terminals[$i]['HOST'] != '' && $_SERVER['REMOTE_ADDR'] == $terminals[$i]['HOST'] && !$session->data['TERMINAL']) {
+            if ($terminals[$i]['HOST'] != '' && $_SERVER['REMOTE_ADDR'] == $terminals[$i]['HOST'] && empty($session->data['TERMINAL'])) {
                 $session->data['TERMINAL'] = $terminals[$i]['NAME'];
             }
             if (mb_strtoupper($terminals[$i]['NAME'], 'UTF-8') == mb_strtoupper(isset($session->data['TERMINAL']) ? $session->data['TERMINAL'] : '', 'UTF-8')) {
@@ -313,7 +313,6 @@ class application extends module
 
         $out['AJAX'] = $this->ajax;
         $out['POPUP'] = $this->popup;
-
 
         $days = array(LANG_WEEK_SUN, LANG_WEEK_MON, LANG_WEEK_TUE, LANG_WEEK_WED, LANG_WEEK_THU, LANG_WEEK_FRI, LANG_WEEK_SAT);
 

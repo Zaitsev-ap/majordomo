@@ -300,7 +300,7 @@ class xray extends module
                     $scripts = SQLSelect("SELECT ID, TITLE FROM scripts WHERE (CODE LIKE '%" . DBSafe($k) . "%' OR TITLE LIKE '" . DBSafe($v) . "')");
                     $total = count($scripts);
                     for ($i = 0; $i < $total; $i++) {
-                        if (!$found['script' . $scripts[$i]['ID']]) {
+                        if (empty($found['script' . $scripts[$i]['ID']])) {
                             $rec = array();
                             $rec['TYPE'] = 'script';
                             $rec['TITLE'] = $scripts[$i]['TITLE'];
@@ -312,7 +312,7 @@ class xray extends module
                     $objects = SQLSelect("SELECT ID, TITLE, CLASS_ID FROM objects WHERE (TITLE LIKE '" . DBSafe($v) . "')");
                     $total = count($objects);
                     for ($i = 0; $i < $total; $i++) {
-                        if (!$found['object' . $scripts[$i]['ID']]) {
+                        if (!empty($scripts[$i]['ID']) &&  !empty($found['object' . $scripts[$i]['ID']])) {
                             $rec = array();
                             $rec['TYPE'] = 'object';
                             $rec['TITLE'] = $objects[$i]['TITLE'];
@@ -350,7 +350,7 @@ class xray extends module
                     $properties = SQLSelect("SELECT properties.ID, properties.TITLE, classes.TITLE AS CLASS, objects.TITLE AS OBJECT, properties.CLASS_ID, properties.OBJECT_ID FROM properties LEFT JOIN classes ON properties.CLASS_ID=classes.ID LEFT JOIN objects ON properties.OBJECT_ID=objects.ID WHERE (properties.TITLE LIKE '" . DBSafe($v) . "')");
                     $total = count($properties);
                     for ($i = 0; $i < $total; $i++) {
-                        if (!$found['property' . $properties[$i]['ID'] . '_' . $properties[$i]['OBJECT_ID']]) {
+                        if (empty($found['property' . $properties[$i]['ID'] . '_' . $properties[$i]['OBJECT_ID']])) {
                             $rec = array();
                             $rec['TYPE'] = 'property';
                             $rec['TITLE'] = $properties[$i]['TITLE'];
@@ -373,7 +373,7 @@ class xray extends module
                     //print_r($pvalues);
                     $total = count($pvalues);
                     for ($i = 0; $i < $total; $i++) {
-                        if (!$found['property' . $pvalues[$i]['PROPERTY_ID'] . '_' . $pvalues[$i]['OBJECT_ID']]) {
+                        if (empty($found['property' . $pvalues[$i]['PROPERTY_ID'] . '_' . $pvalues[$i]['OBJECT_ID']])) {
                             $rec = array();
                             $rec['TYPE'] = 'property';
                             $rec['TITLE'] = $pvalues[$i]['OBJECT'] . '.' . $pvalues[$i]['TITLE'];
@@ -774,7 +774,7 @@ class xray extends module
                         $files = array();
                         while (false !== ($entry = readdir($handle))) {
                             if (preg_match('/^cycle/is', $entry)) {
-                                $title = preg_replace('/\.php$/', '', $entry);
+                                $title = preg_replace('/\.(php|py)$/', '', $entry);
                                 if (!isset($seen[$title])) {
                                     $res[] = array('TITLE' => $title . 'Run');
                                 }

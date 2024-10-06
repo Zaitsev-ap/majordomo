@@ -11,7 +11,8 @@ set_time_limit(0);
 include_once("./load_settings.php");
 include_once(DIR_MODULES . "control_modules/control_modules.class.php");
 $ctl = new control_modules();
-setGlobal((str_replace('.php', '', basename(__FILE__))) . 'Run', time(), 1);
+$cycleVarNameRUN=str_replace('.php', '', basename(__FILE__)) . "Run";
+setGlobal($cycleVarNameRUN, time(), 1);
 
 //SQLTruncateTable('phistory_queue');
 
@@ -25,17 +26,18 @@ if (!$limit) {
 }
 
 $checked_time = 0;
-setGlobal((str_replace('.php', '', basename(__FILE__))) . 'Run', time(), 1);
-$cycleVarName = 'ThisComputer.' . str_replace('.php', '', basename(__FILE__)) . 'Run';
+setGlobal($cycleVarNameRUN, time(), 1);
+//$cycleVarName = 'ThisComputer.' . str_replace('.php', '', basename(__FILE__)) . 'Run';
 
 echo date("H:i:s") . " running " . basename(__FILE__) . "\n";
 
 $processed = array();
 
 while (1) {
-    if (time() - $checked_time > 5) {
-        $checked_time = time();
-        setGlobal((str_replace('.php', '', basename(__FILE__))) . 'Run', time(), 1);
+    $time = time();
+    if ($time - $checked_time > 50) {
+        $checked_time = $time;
+        setGlobal($cycleVarNameRUN, $time, 1);
         // saveToCache("MJD:$cycleVarName", $checked_time);
     }
 
@@ -113,6 +115,7 @@ while (1) {
                 //debug_echo(" Check history for same value ".$h['VALUE_ID']);
                 $tmp_history = SQLSelect("SELECT * FROM $table_name WHERE VALUE_ID='" . $q_rec['VALUE_ID'] . "' ORDER BY ID DESC LIMIT 2");
                 $prev_value = $tmp_history[0]['VALUE'];
+                if (isset($tmp_history[1]['VALUE']))
                 $prev_prev_value = $tmp_history[1]['VALUE'];
                 //debug_echo(" Done ");
 

@@ -19,14 +19,17 @@ echo date("H:i:s") . " running " . basename(__FILE__) . PHP_EOL;
 
 $checked_time = 0;
 $latest_sent = time();
-setGlobal((str_replace('.php', '', basename(__FILE__))) . 'Run', time(), 1);
-$cycleVarName = 'ThisComputer.' . str_replace('.php', '', basename(__FILE__)) . 'Run';
+//$cycleVarName = 'ThisComputer.' . str_replace('.php', '', basename(__FILE__)) . 'Run';
+$cycleVarNameRUN=str_replace('.php', '', basename(__FILE__)) . "Run";
+setGlobal($cycleVarNameRUN, $latest_sent, 1);
+
 
 clearTimeout('restartWebSocket');
 
 while (1) {
-    if ($checked_time != time()) {
-        $checked_time = time();
+    $time = time();
+    if ($checked_time != $time) {
+        $checked_time = $time;
         $queue = SQLSelect("SELECT * FROM cached_ws");
         if (isset($queue[0]['PROPERTY'])) {
             SQLTruncateTable('cached_ws');
@@ -59,10 +62,10 @@ while (1) {
             }
 
             if ($sent_ok) {
-                $latest_sent = time();
+                $latest_sent = $time;
                 // saveToCache("MJD:$cycleVarName", $latest_sent);
-                setGlobal((str_replace('.php', '', basename(__FILE__))) . 'Run', $latest_sent, 1);
-                setTimeout('restartWebSocket', 'sg("cycle_websocketsRun","");sg("cycle_websocketsControl","restart");', 5 * 60);
+                setGlobal($cycleVarNameRUN, $latest_sent, 1);
+                //setTimeout('restartWebSocket', 'sg("cycle_websocketsRun","");sg("cycle_websocketsControl","restart");', 5 * 60);
             } else {
                 echo date("H:i:s") . ' Error while posting to websocket.' . "\n";
             }
@@ -74,4 +77,4 @@ while (1) {
     sleep(1);
 }
 
-DebMes("Unexpected close of cycle: " . basename(__FILE__));
+DebMes("Unexpected close of cycle: " . "basename(__FILE__)");

@@ -17,15 +17,19 @@ $ctl = new control_modules();
 $sc = new scripts();
 $checked_time = 0;
 
-setGlobal((str_replace('.php', '', basename(__FILE__))) . 'Run', time(), 1);
-$cycleVarName = 'ThisComputer.' . str_replace('.php', '', basename(__FILE__)) . 'Run';
+//$cycleVarName = 'ThisComputer.' . str_replace('.php', '', basename(__FILE__)) . 'Run';
+$cycleVarNameRUN=str_replace('.php', '', basename(__FILE__)) . "Run";
+
+setGlobal($cycleVarNameRUN, time(), 1);
+
 
 echo date("H:i:s") . " running " . basename(__FILE__) . PHP_EOL;
 
 while (1) {
-    if ((time() - $checked_time) > 5) {
-        $checked_time = time();
-        setGlobal((str_replace('.php', '', basename(__FILE__))) . 'Run', time(), 1);
+    $time = time();
+    if (($time - $checked_time) > 50) {
+        $checked_time = $time;
+        setGlobal($cycleVarNameRUN, $time, 1);
     }
     runScheduledJobs();
     $sc->checkScheduledScripts();

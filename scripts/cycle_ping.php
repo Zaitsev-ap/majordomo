@@ -21,15 +21,24 @@ $checked_time = 0;
 setGlobal((str_replace('.php', '', basename(__FILE__))).'Run', time(), 1);
 $cycleVarName='ThisComputer.'.str_replace('.php', '', basename(__FILE__)).'Run';
 
+//$cycleVarName='ThisComputer.'.str_replace('.php', '', basename(__FILE__)).'Run';
+$cycleVarNameRUN=str_replace('.php', '', basename(__FILE__)) . "Run";
+
+setGlobal($cycleVarName, time(), 1);
 echo date("H:i:s") . " running " . basename(__FILE__) . PHP_EOL;
 
 while (1)
 {
-   if (time() - $checked_time > 10)
+   $time = time();
+if ($time - $checked_time > 10)
    {
       $checked_time = time();
-      setGlobal((str_replace('.php', '', basename(__FILE__))) . 'Run', time(), 1);
-      // saveToCache("MJD:$cycleVarName", $checked_time);
+      if ($time - $cycle_checked_time > 50) {
+            $cycle_checked_time = $time;
+            setGlobal($cycleVarNameRUN, $time, 1);
+        }
+      
+      
       // checking all hosts
       $pinghosts->checkAllHosts();
    }
