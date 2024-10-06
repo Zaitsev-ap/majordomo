@@ -14,9 +14,11 @@ include_once(DIR_MODULES . "control_modules/control_modules.class.php");
 $ctl = new control_modules();
 
 $checked_time = 0;
+//$cycleVarName = 'ThisComputer.' . str_replace('.php', '', basename(__FILE__)) . 'Run';
+$cycleVarNameRUN=str_replace('.php', '', basename(__FILE__)) . "Run";
 
-setGlobal((str_replace('.php', '', basename(__FILE__))) . 'Run', time(), 1);
-$cycleVarName = 'ThisComputer.' . str_replace('.php', '', basename(__FILE__)) . 'Run';
+setGlobal($cycleVarNameRUN, time(), 1);
+
 
 $objects = getObjectsByClass('systemStates');
 if (is_array($objects) || $objects instanceof Countable) {
@@ -46,9 +48,11 @@ if (isset($_GET['once'])) {
     echo date("H:i:s") . " running " . basename(__FILE__) . PHP_EOL;
 
     while (1) {
-        if (time() - $checked_time > 10) {
-            setGlobal((str_replace('.php', '', basename(__FILE__))) . 'Run', time(), 1);
-            $checked_time = time();
+        $time = time();
+        //if ($time - $checked_time > 10) {
+        if ($time - $checked_time > 55) {
+            setGlobal($cycleVarNameRUN, $time, 1);
+            $checked_time = $time;
             // saveToCache("MJD:$cycleVarName", $checked_time);
 
             for ($i = 0; $i < $total; $i++) {

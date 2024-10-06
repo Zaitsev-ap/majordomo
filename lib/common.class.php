@@ -286,7 +286,7 @@ function clearTimeOut($title)
 function timeOutExists($title)
 {
     $job = SQLSelectOne("SELECT ID FROM jobs WHERE PROCESSED = 0 AND TITLE = '" . DBSafe($title) . "'");
-	if(!isset($job)) return false;
+	if(empty($job)) return false;
     return (int)$job['ID'];
 }
 
@@ -439,13 +439,13 @@ function runScriptSafe($id, $params = 0)
     $run_SafeScript = '';
 
     if (is_array($params)) {
-        if (isset($params['m_c_s']) && is_array($params['m_c_s']) && !empty($params['m_c_s'])) {
+        if (is_array($params['m_c_s']) && !empty($params['m_c_s'])) {
             $call_stack = $params['m_c_s'];
         }
-        if (isset($params['r_s_s']) && !empty($params['r_s_s'])) {
+        if (!empty($params['r_s_s'])) {
             $run_SafeScript = $params['r_s_s'];
         }
-        $raiseEvent = $params['raiseEvent'];
+        if (!empty($params['raiseEvent'])) $raiseEvent = $params['raiseEvent'];
         unset($params['raiseEvent']);
         unset($params['r_s_m']);
         unset($params['m_c_s']);
@@ -456,7 +456,7 @@ function runScriptSafe($id, $params = 0)
             $call_stack = $_GET['m_c_s'];
         }
         $raiseEvent = $_GET['raiseEvent'];
-        $run_SafeScript = $_GET['r_s_s'];
+        if (!empty($_GET['r_s_s'])) $run_SafeScript = $_GET['r_s_s'];
         if (is_array($call_stack) && in_array($current_call, $call_stack)) {
             $call_stack[] = $current_call;
             DebMes("Warning: cross-linked call of " . $current_call . "\nlog:\n" . implode(" -> \n", $call_stack));

@@ -30,7 +30,8 @@ class WebsocketClient
         {
                 if($this->_connected === false)
                 {
-                        trigger_error("Not connected", E_USER_WARNING);
+                        //trigger_error("Not connected", E_USER_WARNING);
+                        trigger_error("Нет соединения", E_USER_WARNING);
                         return false;
                 }
                 if( !is_string($data)) {
@@ -42,7 +43,8 @@ class WebsocketClient
                         return false;
                 }
                 $res = @fwrite($this->_Socket, $this->_hybi10Encode($data, $type, $masked));            
-                if($res === 0 || $res === false)
+                //if($res === 0 || $res === false)
+                if(empty($res))
                 {
                         return false;
                 }               
@@ -74,8 +76,9 @@ class WebsocketClient
                 }
                 $header.= "Sec-WebSocket-Version: 13\r\n\r\n";                      
                 
-                $this->_Socket = fsockopen($host, $port, $errno, $errstr, 2);
-                if(!empty($this->_Socket))
+               // $this->_Socket = fsockopen($host, $port, $errno, $errstr, 2);
+                //if(!empty($this->_Socket))
+                if ( false !== ($this->_Socket = fsockopen($host, $port, $errno, $errstr, 2)))
                 {
                 socket_set_timeout($this->_Socket, 0, 10000);
                 @fwrite($this->_Socket, $header);

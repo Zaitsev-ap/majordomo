@@ -203,9 +203,11 @@ class commands extends module
                 $total = count($labels);
                 $seen = array();
                 for ($i = 0; $i < $total; $i++) {
+                    if(!empty($labels[$i])) {
                     $item_id = trim($labels[$i]);
-                    if (!$item_id || $seen[$item_id]) {
+                    if (empty($item_id) || !empty($seen[$item_id])) {
                         continue;
+                    }
                     }
 
                     if (preg_match('/(\d+)\_(\d+)/', $item_id, $m)) {
@@ -229,7 +231,7 @@ class commands extends module
                         $item['LINKED_OBJECT'] = $object_rec['TITLE'];
                     }
 
-                    if ($item['ID']) {
+                    if (!empty($item['ID'])) {
                         if ($item['TYPE'] == 'custom') {
                             $ajax = 0;
                             $item['DATA'] = processTitle($item['DATA'], $this);
@@ -258,7 +260,7 @@ class commands extends module
                 $seen = array();
                 for ($i = 0; $i < $total; $i++) {
                     $item_id = trim($values[$i]);
-                    if (!$item_id || $seen[$item_id]) {
+                    if (empty($item_id) || !empty($seen[$item_id])) {
                         continue;
                     }
 

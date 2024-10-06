@@ -1704,6 +1704,8 @@ $dictionary = array(
 	'NEWMARKET_MODULE_DISCUSS' => 'Обсуждение',
 	'NEWMARKET_BUY_FOR' => 'Купить за',
 	
+	'LANG_GPSTRACK_ACTION_ENTERING' => 'Вход в зону',
+	
 );
 
 foreach ($dictionary as $k => $v) {

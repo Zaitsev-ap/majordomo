@@ -52,10 +52,12 @@ $started_time = time();
 
 echo date("H:i:s") . " running " . basename(__FILE__) . "\n";
 set_time_limit(0);
+$cycleVarNameRUN=str_replace('.php', '', basename(__FILE__)) . "Run";
 while (1) {
-    if (time() - $checked_time > 5) {
-        $checked_time = time();
-        setGlobal((str_replace('.php', '', basename(__FILE__))) . 'Run', time(), 1);
+    $time = time();
+    if ($time - $checked_time > 55) {
+        $checked_time = $time;
+        setGlobal($cycleVarNameRUN, $time, 1);
 
     }
 
@@ -66,6 +68,13 @@ while (1) {
     #NewMinute
     if ($m != $old_minute) {
 
+        
+        callMethod('ClockChime.onNewMinute');
+        if ($m == 2 || $m == 17 || $m == 32 || $m == 47 )   callMethod('ClockChime.on15Minute');
+        if ($m == 3 || $m == 23 || $m == 43)   callMethod('ClockChime.on20Minute');
+        processSubscriptionsSafe('MINUTELY');        
+        
+/*
         $timestamp = time() - getGlobal('ThisComputer.started_time');
         setGlobal('ThisComputer.uptime', $timestamp);
 
@@ -106,21 +115,27 @@ while (1) {
 
     #NewHour
     if ($h != $old_hour) {
+        callMethod('ClockChime.onNewHour');
         processSubscriptionsSafe('HOURLY');
+    /*
         for ($i = 0; $i < $total; $i++) {
             echo date('H:i:s') . ' ' . $objects[$i]['TITLE'] . "->onNewHour\n";
             callMethodSafe($objects[$i]['TITLE'] . '.onNewHour');
-        }
+        } 
+*/
         $old_hour = $h;
     }
 
     #NewDay
     if ($dt != $old_date) {
+        callMethod('ClockChime.onNewDay');
         processSubscriptionsSafe('DAILY');
+        /*
         for ($i = 0; $i < $total; $i++) {
             echo date('H:i:s') . ' ' . $objects[$i]['TITLE'] . "->onNewDay\n";
             callMethodSafe($objects[$i]['TITLE'] . '.onNewDay');
         }
+*/
         $old_date = $dt;
     }
 
