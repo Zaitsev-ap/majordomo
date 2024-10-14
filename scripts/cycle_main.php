@@ -69,9 +69,9 @@ while (1) {
     if ($m != $old_minute) {
 
         
-        callMethod('ClockChime.onNewMinute');
-        if ($m == 2 || $m == 17 || $m == 32 || $m == 47 )   callMethod('ClockChime.on15Minute');
-        if ($m == 3 || $m == 23 || $m == 43)   callMethod('ClockChime.on20Minute');
+        callMethodSafe('ClockChime.onNewMinute');
+        if ($m == 2 || $m == 17 || $m == 32 || $m == 47 )   callMethodSafe('ClockChime.on15Minute');
+        if ($m == 3 || $m == 23 || $m == 43)   callMethodSafe('ClockChime.on20Minute');
         processSubscriptionsSafe('MINUTELY');        
         
 /*
@@ -109,7 +109,7 @@ while (1) {
             echo date('H:i:s') . ' ' . $objects[$i]['TITLE'] . "->onNewMinute\n";
             sg($objects[$i]['TITLE'] . '.time', date('Y-m-d H:i:s'));
             callMethodSafe($objects[$i]['TITLE'] . '.onNewMinute');
-        }
+        } */
         $old_minute = $m;
     }
 
@@ -128,7 +128,7 @@ while (1) {
 
     #NewDay
     if ($dt != $old_date) {
-        callMethod('ClockChime.onNewDay');
+        callMethodSafe('ClockChime.onNewDay');
         processSubscriptionsSafe('DAILY');
         /*
         for ($i = 0; $i < $total; $i++) {
