@@ -8,13 +8,18 @@ import time
 import re
 import sys
 import threading
+import MySQLdb as mdb
 
 from pathlib import Path
 root_path = str(Path( __file__ ).parent.parent.absolute())
 
 sys.path.insert(0, root_path+'/lib/python')
 sys.path.insert(0, root_path+'/cms/python')
-import mjd_constants
+
+# -*- coding: utf-8 -*-
+from mjd_constants import *
+
+
 from general import getGlobal
 from general import setGlobal
 from general import callAPI
@@ -349,7 +354,14 @@ async def updateStatus():
         if (debug) : logger.debug("UpdateStatus")
         ts = int(time.time())
         try:
-            setGlobal(cycleName, ts)
+            #setGlobal(cycleName, ts)
+            tsstr = str(int(time.time()))
+            cycleName = 'cycle_websocketsRun'
+            con = mdb.connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, charset='utf8')
+            cur = con.cursor()
+            statement = "REPLACE INTO cached_cycles (TITLE, VALUE) VALUES ('cycle_websocketsRun',"+tsstr+")"
+            cur.execute(statement)
+            con.close()
         except Exception as e:
             if (debug) : logger.error(f'Произошло исключение: {e}', exc_info=True)
         await asyncio.sleep(55)
