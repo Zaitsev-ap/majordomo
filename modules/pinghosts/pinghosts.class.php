@@ -5,7 +5,7 @@
 * Pinghosts
 *
 * @package MajorDoMo
-* @author Serge Dzheigalo <jey@tut.by> http://smartliving.ru/
+* @author Serge Dzheigalo <sergejey@gmail.com> https://majordomohome.com/
 * @version 0.2 (wizard, 00:01:48 [Jan 06, 2011])
 */
 Define('PING_TYPE_OPTIONS', '0=PING (HOST)|1=WEB PAGE (URL)|2=PING (HOST:PORT)'); // options for 'HOST TYPE'

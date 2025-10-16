@@ -330,6 +330,9 @@ $this->device_types = array(
             'notify_status' => array('DESCRIPTION' => LANG_DEVICES_NOTIFY_STATUS, '_CONFIG_TYPE' => 'yesno'),
             'notify_nc' => array('DESCRIPTION' => LANG_DEVICES_NOTIFY_NOT_CLOSED, '_CONFIG_TYPE' => 'yesno'),
             'support_level' => array('DESCRIPTION' => LANG_DEVICES_OPENABLE_SUPPORT_LEVEL, '_CONFIG_TYPE' => 'yesno'),
+            'levelWork' => array('DESCRIPTION' => 'Brightness level (work)', 'ONCHANGE' => 'levelWorkUpdated'),
+            'minWork' => array('DESCRIPTION' => LANG_DEVICES_DIMMER_MIN_WORK, '_CONFIG_TYPE' => 'num', '_CONFIG_HELP' => 'SdDimmerMinMax', '_CONFIG_CONDITION' => 'support_level'),
+            'maxWork' => array('DESCRIPTION' => LANG_DEVICES_DIMMER_MAX_WORK, '_CONFIG_TYPE' => 'num', '_CONFIG_HELP' => 'SdDimmerMinMax', '_CONFIG_CONDITION' => 'support_level'),
             'openType' => array('DESCRIPTION' => LANG_DEVICES_OPENTYPE,
                 '_CONFIG_TYPE' => 'select', '_CONFIG_HELP' => 'SdOpenType',
                 '_CONFIG_OPTIONS' =>
@@ -337,7 +340,8 @@ $this->device_types = array(
                     ',window=' . LANG_DEVICES_OPENTYPE_WINDOW .
                     ',door=' . LANG_DEVICES_OPENTYPE_DOOR .
                     ',curtains=' . LANG_DEVICES_OPENTYPE_CURTAINS .
-                    ',shutters=' . LANG_DEVICES_OPENTYPE_SHUTTERS),
+                    ',shutters=' . LANG_DEVICES_OPENTYPE_SHUTTERS .
+                    ',valve=' . LANG_DEVICES_OPENTYPE_VALVE),
             'notify_msg_opening' => array('DESCRIPTION' => LANG_DEVICES_MSG_OPENING, '_CONFIG_TYPE' => 'text'),
             'notify_msg_closing' => array('DESCRIPTION' => LANG_DEVICES_MSG_CLOSING, '_CONFIG_TYPE' => 'text'),
             'notify_msg_reminder' => array('DESCRIPTION' => LANG_DEVICES_MSG_REMINDER, '_CONFIG_TYPE' => 'text'),
@@ -348,6 +352,7 @@ $this->device_types = array(
             'statusUpdated' => array('DESCRIPTION' => 'Status updated event'),
             'setLevel' => array('DESCRIPTION' => 'Set open level'),
             'levelUpdated' => array('DESCRIPTION' => 'Level Updated'),
+            'levelWorkUpdated' => array('DESCRIPTION' => 'Level Work Updated'),
             'switch' => array('DESCRIPTION' => 'Switch'),
             'open' => array('DESCRIPTION' => 'Open', '_CONFIG_SHOW' => 1),
             'close' => array('DESCRIPTION' => 'Close', '_CONFIG_SHOW' => 1),

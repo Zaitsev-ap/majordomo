@@ -4,7 +4,7 @@
  * Object handler project script
  *
  * @package MajorDoMo
- * @author Serge Dzheigalo <jey@tut.by> http://smartliving.ru/
+ * @author Serge Dzheigalo <sergejey@gmail.com> https://majordomohome.com/
  * @version 1.0
  */
 
@@ -47,7 +47,6 @@ chdir(dirname(__FILE__) . '/..');
 
 include_once("./config.php");
 include_once("./lib/loader.php");
-
 
 startMeasure('TOTAL'); // start calculation of execution time
 
@@ -113,6 +112,11 @@ if ($module != '') {
 $job = gr('job');
 $object = gr('object');
 $method = gr('method');
+$script = gr('script');
+
+$v = gr('v');
+$p = gr('p');
+$m = gr('m');
 
 if ($object != '') {
     $obj = getObject($object);

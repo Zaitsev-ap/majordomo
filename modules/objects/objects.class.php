@@ -5,7 +5,7 @@
  * Objects
  *
  * @package MajorDoMo
- * @author Serge Dzheigalo <jey@tut.by> http://smartliving.ru/
+ * @author Serge Dzheigalo <sergejey@gmail.com> https://majordomohome.com/
  * @version 0.4 (wizard, 12:05:51 [May 22, 2009])
  */
 //
@@ -749,13 +749,6 @@ class objects extends module
     }
 
 
-    /**
-     * Title
-     *
-     * Description
-     *
-     * @access public
-     */
     function getProperty($property, $cache_checked = false)
     {
         if (!$this->object_title) return false;
@@ -768,7 +761,7 @@ class objects extends module
         } elseif ($property == 'object_description') {
             return $this->description;
         } elseif ($property == 'object_id') {
-            return $this->id;
+            return returnTypedValue($this->id);
         } elseif ($property == 'class_title') {
             return $this->class_title;
         }
@@ -776,7 +769,7 @@ class objects extends module
         if (!$cache_checked) {
             $cached_value = checkFromCache($cached_name);
             if ($cached_value !== false) {
-                return $cached_value;
+                return returnTypedValue($cached_value);
             }
         }
 
@@ -817,7 +810,7 @@ class objects extends module
             $value['VALUE'] = false;
         }
         saveToCache($cached_name, $value['VALUE']);
-        return $value['VALUE'];
+        return returnTypedValue($value['VALUE']);
     }
 
     /**
@@ -851,10 +844,10 @@ class objects extends module
             $no_linked = 0;
         }
         if (defined('CALL_SOURCE')) {
-            $source .= ' '.CALL_SOURCE;
+            $source .= ' ' . CALL_SOURCE;
         }
         if (isset($_SERVER['REQUEST_URI'])) {
-            $source .= ' '.urldecode($_SERVER['REQUEST_URI']);
+            $source .= ' ' . urldecode($_SERVER['REQUEST_URI']);
         }
         $source = str_replace("\n", '', $source);
         if (mb_strlen($source) > 250) {

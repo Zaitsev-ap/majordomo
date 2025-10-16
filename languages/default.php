@@ -3,7 +3,7 @@
  * Default language file
  *
  * @package MajorDoMo
- * @author Serge Dzheigalo <jey@tut.by> http://smartliving.ru/
+ * @author Serge Dzheigalo <sergejey@gmail.com> https://majordomohome.com/
  * @version 1.0
  */
 
@@ -1054,6 +1054,7 @@ $dictionary = array(
     'USE_CLASS_SETTINGS' => 'use class settings',
 
     'USING_LATEST_VERSION' => 'You are using the latest version!',
+    'VERSION_TOO_OLD' => 'You have too old version of the system',
     'LATEST_UPDATES' => 'Latest updates',
     'UPDATE_TO_THE_LATEST' => 'Update to the latest code',
     'SAVE_BACKUP' => 'Save Backup',
@@ -1248,6 +1249,7 @@ $dictionary = array(
     'DEVICES_OPENTYPE_GATES' => 'Gates',
     'DEVICES_OPENTYPE_WINDOW' => 'Window',
     'DEVICES_OPENTYPE_DOOR' => 'Door',
+    'DEVICES_OPENTYPE_VALVE' => 'Valve',
 
     'DEVICES_ADD_MENU' => 'Add device to Menu',
     'DEVICES_ADD_SCENE' => 'Add device to Scene',

@@ -5,7 +5,7 @@
  * Used to handle errors
  *
  * @package MajorDoMo
- * @author Serge Dzheigalo <jey@tut.by> http://smartliving.ru/
+ * @author Serge Dzheigalo <sergejey@gmail.com> https://majordomohome.com/
  * @version 0.2b
  */
 
@@ -13,7 +13,7 @@
  * Error handler
  * @category Exceptions
  * @package Framework
- * @author Serge Dzheigalo <jey@tut.by>
+ * @author Serge Dzheigalo <sergejey@gmail.com>
  * @copyright 2002 ActiveUnit
  * @license http://opensource.org/licenses/mit-license.php MIT License
  * @link https://github.com/sergejey/majordomo/blob/master/lib/errors.class.php

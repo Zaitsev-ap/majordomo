@@ -92,6 +92,12 @@ if ($this->edit_mode == 'edit_link') {
     //print_r($link_details);exit;
 }
 
+if ($this->edit_mode == 'cancel_timer') {
+    $timer = gr('timer');
+    clearTimeOut($timer);
+    $this->redirect("?id=" . $rec['ID'] . "&tab=" . $this->tab . "&view_mode=" . $this->view_mode);
+}
+
 $links = SQLSelect("SELECT devices_linked.*, devices.TITLE FROM devices_linked LEFT JOIN devices ON devices.ID=DEVICE2_ID WHERE (DEVICE1_ID=" . (int)$rec['ID'] . " OR DEVICE2_ID=" . (int)$rec['ID'] . ") ORDER BY ID");
 if (isset($links[0]['ID'])) {
     $total = count($links);
@@ -110,6 +116,18 @@ if (isset($links[0]['ID'])) {
         $rule = SQLSelectOne("SELECT ID FROM security_rules WHERE OBJECT_TYPE='sdevice' AND OBJECT_ID=" . $links[$i]['ID']);
         if ($rule['ID']) {
             $links[$i]['HAS_RULE'] = 1;
+        }
+        if ($links[$i]['LAST_EXECUTED']!='') {
+            $links[$i]['LAST_EXECUTED'] = getPassedText(strtotime($links[$i]['LAST_EXECUTED']));
+        }
+        if ($links[$i]['TIMER_NAME']!='') {
+            $timer_job = timeOutExists($links[$i]['TIMER_NAME']);
+            if ($timer_job) {
+                $job = SQLSelectOne("SELECT * FROM jobs WHERE ID=" . $timer_job);
+                $links[$i]['RUNTIME'] = strtotime($job['RUNTIME'])-time();
+            } else {
+                $links[$i]['TIMER_NAME'] = '';
+            }
         }
     }
     $out['LINKS'] = $links;

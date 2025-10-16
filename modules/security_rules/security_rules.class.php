@@ -5,8 +5,8 @@
  * Security_rules
  *
  * @package project
- * @author Serge J. <jey@tut.by>
- * @copyright http://www.atmatic.eu/ (c)
+ * @author Serge J. <sergejey@gmail.com>
+ * @copyright https://majordomohome.com/ (c)
  * @version 0.1 (wizard, 12:05:34 [May 04, 2013])
  */
 //

@@ -3,7 +3,7 @@
  * Russian language file
  *
  * @package MajorDoMo
- * @author Serge Dzheigalo <jey@tut.by> http://smartliving.ru/
+ * @author Serge Dzheigalo <sergejey@gmail.com> https://majordomohome.com/
  * @version 1.0
  */
 
@@ -12,7 +12,7 @@ $dictionary = array(
 
     /* general */
     'SETTINGS_SITE_LANGUAGE_CODE' => 'ru_RU',
-    'WIKI_URL' => 'http://smartliving.ru/',
+    'WIKI_URL' => 'https://mjdm.ru/',
     'KB_URL'=>'https://kb.smartliving.ru/',
     'DEFAULT_COMPUTER_NAME' => 'Алиса',
     'WELCOME_GREETING' => 'Добро пожаловать!',
@@ -1050,7 +1050,7 @@ $dictionary = array(
 
     'COUNTER' => 'Счётчик',
     'USE_CLASS_SETTINGS' => 'использовать настройки свойств класса',
-
+    'VERSION_TOO_OLD' => 'Вы используете устаревшую версию системы',
     'USING_LATEST_VERSION' => 'Вы используете последнюю версию!',
     'LATEST_UPDATES' => 'Последние обновления',
     'UPDATE_TO_THE_LATEST' => 'Обновить систему',
@@ -1246,6 +1246,7 @@ $dictionary = array(
     'DEVICES_OPENTYPE_GATES' => 'Ворота',
     'DEVICES_OPENTYPE_WINDOW' => 'Окно',
     'DEVICES_OPENTYPE_DOOR' => 'Дверь',
+    'DEVICES_OPENTYPE_VALVE' => 'Кран',
 
     'DEVICES_ADD_MENU' => 'Добавить устройство в Меню',
     'DEVICES_ADD_SCENE' => 'Добавить устройство на Сцену',

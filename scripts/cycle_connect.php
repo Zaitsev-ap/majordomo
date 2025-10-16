@@ -3,7 +3,7 @@
  * CONNECT MQTT CLIENT
  *
  * @package MajorDoMo
- * @author Serge Dzheigalo <jey@tut.by> http://smartliving.ru/
+ * @author Serge Dzheigalo <sergejey@gmail.com> https://majordomohome.com/
  * @version 1.3
  */
 chdir(dirname(__FILE__) . '/../');
@@ -34,6 +34,8 @@ $simple_devices_queue_checked = 0;
 setGlobal((str_replace('.php', '', basename(__FILE__))) . 'Run', time(), 1);
 
 while (1) {
+
+    DebMes("STARTING CONNECT CYCLE", 'connect');
     $connect = new connect();
     $connect->getConfig();
 
@@ -41,6 +43,18 @@ while (1) {
         echo "Connect sync turned off.";
         exit;
     }
+
+    $devices_data = array();
+    $devices_data_queue = checkOperationsQueue('connect_device_data');
+
+    $sync_required = checkOperationsQueue('connect_sync_devices');
+    echo date('Y-m-d H:i:s') . " Sending all devices\n";
+    DebMes("Sending all devices", 'connect');
+    $devices_sent_time = time();
+    $connect->sendAllDevices();
+    DebMes("Devicese sent.", 'connect');
+    $saved_devices_data = array(); // clear sent data cache
+
 
     $sqlQuery = "SELECT * FROM commands";
     $commands = SQLSelect($sqlQuery);
@@ -79,18 +93,18 @@ while (1) {
 
     $query = implode(',', $topics);
     $ping_topic = $username . '/ping';
-    $client_name = "MajorDoMo " . $username . " Connect";
+    $client_name = "MJD_" . $username . "_" . time();
     $mqtt_client = new Bluerhinos\phpMQTT($host, $port, $client_name, $ca_file);
 
     echo date('H:i:s') . " Connecting to $host:$port\n";
     DebMes("Connecting to $host:$port", 'connect');
     if ($mqtt_client->connect(true, NULL, $username, $password)) {
-
+        echo date('H:i:s') . " CONNECTED\n";
+        DebMes("CONNECTED.", 'connect');
         $query_list = explode(',', $query);
         $total = count($query_list);
         echo date('H:i:s') . " Topics to watch: $query (Total: $total)\n";
         setGlobal((str_replace('.php', '', basename(__FILE__))) . 'Run', time(), 1);
-        DebMes("CONNECTED.", 'connect');
         $topics = array();
         for ($i = 0; $i < $total; $i++) {
             $path = trim($query_list[$i]);
@@ -102,6 +116,8 @@ while (1) {
             DebMes("Subscribing to $k", 'connect');
         }
         $mqtt_client->subscribe($topics, 0);
+        echo date('H:i:s') . " SUBSCRIBED\n";
+        DebMes("SUBSCRIBED.", 'connect');
         $ping_timestamp = 0;
         while ($mqtt_client->proc()) {
             $currentMillis = round(microtime(true) * 10000);
@@ -114,23 +130,40 @@ while (1) {
                 }
             }
 
-
-            if (!defined('DISABLE_SIMPLE_DEVICES') && ($simple_devices_queue_checked != time())) {
+            if (!defined('DISABLE_SIMPLE_DEVICES') && (time() - $simple_devices_queue_checked >= 5)) {
                 $simple_devices_queue_checked = time();
-                $devices_data = checkOperationsQueue('connect_device_data');
-                foreach ($devices_data as $property_data) {
-                    if (!isset($saved_devices_data[$property_data['DATANAME']]) || $saved_devices_data[$property_data['DATANAME']] != $property_data['DATAVALUE']) {
-                        $saved_devices_data[$property_data['DATANAME']] = $property_data['DATAVALUE'];
-                        $connect->sendDeviceProperty($property_data['DATANAME'], $property_data['DATAVALUE']);
-                    }
+                $devices_data_queue = checkOperationsQueue('connect_device_data');
+                foreach ($devices_data_queue as $property_data_element) {
+                    $devices_data = array_filter($devices_data, function ($element) use ($property_data_element) {
+                        return $element['DATANAME'] != $property_data_element['DATANAME'];
+                    });
+                    $devices_data[] = $property_data_element;
+                }
+                $total_updated_devices = count($devices_data);
+                if ($total_updated_devices > 0) {
+                    $property_data = array_shift($devices_data);
+                    DebMes("Devices data queue size: " . $total_updated_devices, 'connect');
+                    //echo date('Y-m-d H:i:s') . " Sending updated devices data (" . count($devices_data) . ")\n";
+                    //DebMes("Sending updated devices data (" . count($devices_data) . ")", 'connect');
+                    //foreach ($devices_data as $property_data) {
+                    // && !isset($saved_devices_data[$property_data['DATANAME']]) || $saved_devices_data[$property_data['DATANAME']] != $property_data['DATAVALUE']
+                    //$saved_devices_data[$property_data['DATANAME']] = $property_data['DATAVALUE'];
+                    DebMes("Sending " . $property_data['DATANAME'] . ": " . $property_data['DATAVALUE'], 'connect');
+                    $connect->sendDeviceProperty($property_data['DATANAME'], $property_data['DATAVALUE']);
+                    DebMes("Sent " . $property_data['DATANAME'], 'connect');
+                    //}
                 }
                 $sync_required = checkOperationsQueue('connect_sync_devices');
                 if ((time() - $devices_sent_time > 60 * 60) || is_array($sync_required[0])) {
-                    $devices_sent_time = time();
                     echo date('Y-m-d H:i:s') . " Sending all devices\n";
+                    DebMes("Sending all devices", 'connect');
+                    $devices_sent_time = time();
+                    $devices_data = array();
                     $connect->sendAllDevices();
+                    DebMes("Devices sent.", 'connect');
                     $saved_devices_data = array(); // clear sent data cache
                 }
+
             }
 
             if ((time() - $started_time) > $max_run_time) {
@@ -143,10 +176,16 @@ while (1) {
                 $ping_timestamp = time();
                 set_time_limit(10);
                 echo date('Y-m-d H:i:s') . " Pinging MQTT server ($ping_topic) with timestamp " . time() . "\n";
-                if ($mqtt_client->publish($ping_topic, time())) {
-                    echo date('Y-m-d H:i:s') . " PING OK\n";
+                DebMes("Pinging MQTT server ($ping_topic) with timestamp " . time(), 'connect');
+                $bytes_published = $mqtt_client->publish($ping_topic, time());
+                if ($bytes_published) {
+                    echo date('Y-m-d H:i:s') . " PING OK (" . $bytes_published . ")\n";
+                    DebMes("Pinging MQTT server OK", 'connect');
+                    setGlobal((str_replace('.php', '', basename(__FILE__))) . 'Run', time(), 1);
                 } else {
                     echo date('Y-m-d H:i:s') . " PING FAILED\n";
+                    DebMes("Pinging MQTT server FAILED", 'connect');
+                    break;
                 }
                 set_time_limit(0);
             }
@@ -166,7 +205,7 @@ while (1) {
 function procmsg($topic, $msg)
 {
     echo date("Y-m-d H:i:s") . " Topic:{$topic} $msg\n";
-    //DebMes("Processing incoming topic: $topic",'connect');
+    DebMes("Processing incoming $topic: $msg", 'connect');
     if (preg_match('/menu_session/is', $topic)) {
         echo date("Y-m-d H:i:s") . " Menu session\n";
         $parent_id = $msg;

@@ -231,6 +231,14 @@
     background-image: url(../cms/scenes/styles/switch/i_gate_on.png);
 }
 
+.opentype_valve .device-icon {
+    background-image: url(../cms/scenes/styles/informer/i_check_n-a.png);
+}
+.opentype_valve .device-icon.on {
+    background-color:yellow;
+    background-image: url(../cms/scenes/styles/informer/i_check_water.png);
+}
+
 
 .device-icon.temperature {
     background-image: url(../cms/scenes/styles/informer/i_temp.png);

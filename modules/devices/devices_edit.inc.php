@@ -17,7 +17,7 @@ if ($this->owner->print == 1) {
 if (isset($rec['LINKED_OBJECT']) && $rec['LINKED_OBJECT'] != '') {
     $object_rec = SQLSelectOne("SELECT ID FROM objects WHERE TITLE='" . $rec['LINKED_OBJECT'] . "'");
     if ($object_rec['ID']) {
-        $properties = SQLSelect("SELECT pvalues.*, properties.TITLE as PROPERTY FROM pvalues LEFT JOIN properties ON properties.ID=pvalues.PROPERTY_ID WHERE pvalues.OBJECT_ID=" . $object_rec['ID'] . " AND pvalues.LINKED_MODULES!='' ORDER BY UPDATED DESC");
+        $properties = SQLSelect("SELECT pvalues.*, properties.TITLE as PROPERTY, properties.KEEP_HISTORY FROM pvalues LEFT JOIN properties ON properties.ID=pvalues.PROPERTY_ID WHERE pvalues.OBJECT_ID=" . $object_rec['ID'] . " AND (pvalues.LINKED_MODULES!='' OR properties.KEEP_HISTORY>0) ORDER BY UPDATED DESC");
         $total = count($properties);
         if ($total > 0) {
             for ($i = 0; $i < $total; $i++) {
@@ -178,6 +178,11 @@ if ($this->tab == 'settings') {
         $apply_others = gr('apply_others');
         foreach ($properties as $k => $v) {
             if (isset($v['_CONFIG_TYPE'])) {
+                if (isset($v['_CONFIG_CONDITION'])) {
+                    if (is_string($v['_CONFIG_CONDITION']) && !gg($rec['LINKED_OBJECT'] . '.' . $v['_CONFIG_CONDITION'])) {
+                        continue;
+                    }
+                }
                 if ($this->mode == 'update') {
                     global ${$k . '_value'};
                     if (isset(${$k . '_value'})) {
@@ -621,9 +626,9 @@ if ($parent_id) {
     $parent_device = SQLSelectOne("SELECT * FROM devices WHERE ID=" . $parent_id);
     $out['PARENT_DEVICE_TITLE'] = $parent_device['TITLE'];
 } elseif ($rec['ID']) {
-    $sub_devices = SQLSelect("SELECT ID, TITLE FROM devices WHERE PARENT_ID=".(int)$rec['ID']." ORDER BY TITLE");
+    $sub_devices = SQLSelect("SELECT ID, TITLE FROM devices WHERE PARENT_ID=" . (int)$rec['ID'] . " ORDER BY TITLE");
     if (isset($sub_devices[0])) {
-        $out['SUB_DEVICES']=$sub_devices;
+        $out['SUB_DEVICES'] = $sub_devices;
     }
 }
 $out['PARENT_ID'] = $parent_id;

@@ -8,7 +8,7 @@
  * 404-error handler
  *
  * @package MajorDoMo
- * @author Serge Dzheigalo <jey@tut.by> http://smartliving.ru/
+ * @author Serge Dzheigalo <sergejey@gmail.com> https://majordomohome.com/
  */
 list($usec, $sec) = explode(" ",microtime());
 $script_started_time = ((float)$usec + (float)$sec);

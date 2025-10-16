@@ -5,8 +5,8 @@
  * Connect
  *
  * @package project
- * @author Serge J. <jey@tut.by>
- * @copyright http://www.atmatic.eu/ (c)
+ * @author Serge J. <sergejey@gmail.com>
+ * @copyright https://majordomohome.com/ (c)
  * @version 0.1 (wizard, 13:07:13 [Jul 24, 2013])
  */
 //
@@ -568,7 +568,11 @@ class connect extends module
 // POST TO SERVER
         $url = 'https://connect.smartliving.ru/sync_device_data.php';
         $fields = array();
-        $devices = SQLSelect("SELECT devices.ID, devices.TITLE, devices.ALT_TITLES, devices.FAVORITE, devices.TYPE, devices.SUBTYPE, devices.LINKED_OBJECT, locations.TITLE AS ROOM_TITLE FROM devices LEFT JOIN locations ON devices.LOCATION_ID=locations.ID WHERE devices.SYSTEM_DEVICE=0 AND devices.ARCHIVED=0");
+        $devices = SQLSelect("SELECT devices.ID, devices.PARENT_ID, devices.TITLE, devices.ALT_TITLES, devices.FAVORITE, devices.TYPE, devices.SUBTYPE, devices.LINKED_OBJECT, locations.TITLE AS ROOM_TITLE FROM devices LEFT JOIN locations ON devices.LOCATION_ID=locations.ID WHERE devices.SYSTEM_DEVICE=0 AND devices.ARCHIVED=0");
+        $total_devices = count($devices);
+
+        if (!$total_devices) return true;
+
         include_once(DIR_MODULES . 'classes/classes.class.php');
         $cl = new classes();
 
@@ -596,16 +600,16 @@ class connect extends module
         $fields['devices_data'] = json_encode($devices);
         $fields['local_url'] = getLocalIp();
 
-        DebMes("Posting all devices to $url",'device_sync');
+        DebMes("Posting all devices ($total_devices = ".strlen($fields['devices_data'])." bytes) to $url",'device_sync');
         //DebMes($fields['devices_data'],'device_sync');
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, count($fields));
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-        curl_setopt($ch, CURLOPT_TIMEOUT_MS, 30000);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 60);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+        curl_setopt($ch, CURLOPT_TIMEOUT_MS, 60000);
         curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         curl_setopt($ch, CURLOPT_USERPWD, $this->config['CONNECT_USERNAME'] . ":" . $this->config['CONNECT_PASSWORD']);
         if (defined('USE_PROXY') && USE_PROXY != '') {
@@ -615,14 +619,14 @@ class connect extends module
             }
         }
         $result = curl_exec($ch);
-        if (curl_errno($ch) && !$background) {
+        if (curl_errno($ch)) {
             $errorInfo = curl_error($ch);
             $info = curl_getinfo($ch);
             DebMes("Error: " . $errorInfo, 'device_sync');
-        } else {
-            //DebMes("Result : ".$result,'device_sync');
+            $result = false;
         }
         curl_close($ch);
+        return $result;
     }
 
     function sendDeviceProperty($property, $value)

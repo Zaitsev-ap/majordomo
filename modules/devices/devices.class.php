@@ -1587,6 +1587,8 @@ class devices extends module
  devices_linked: LINK_TYPE varchar(100) NOT NULL DEFAULT ''
  devices_linked: LINK_SETTINGS text
  devices_linked: COMMENT varchar(255) NOT NULL DEFAULT ''
+ devices_linked: TIMER_NAME varchar(50) NOT NULL DEFAULT ''
+ devices_linked: LAST_EXECUTED datetime
   
  devices_groups: ID int(10) unsigned NOT NULL auto_increment
  devices_groups: SYS_NAME varchar(100) NOT NULL DEFAULT ''

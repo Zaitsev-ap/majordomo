@@ -480,7 +480,7 @@ function DebMes($errorMessage, $logLevel = "debug")
         mkdir($path, 0777);
     }
     if (is_array($errorMessage) || is_object($errorMessage)) {
-        $errorMessage = json_encode($errorMessage, JSON_PRETTY_PRINT);
+        $errorMessage = json_encode($errorMessage, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     }
 
     if ($logLevel != 'debug') {

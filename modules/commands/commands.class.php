@@ -5,7 +5,7 @@
  * Commands
  *
  * @package MajorDoMo
- * @author Serge Dzheigalo <jey@tut.by> http://smartliving.ru/
+ * @author Serge Dzheigalo <sergejey@gmail.com> https://majordomohome.com/
  * @version 0.5 (wizard, 17:04:46 [Apr 09, 2009])
  */
 //

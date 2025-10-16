@@ -172,7 +172,7 @@ if ($this->tab == 'properties') {
         if ($this->mode == 'update') {
             global ${"value" . $props[$i]['ID']};
             if (isset(${"value" . $props[$i]['ID']})) {
-                setGlobal($rec['TITLE'].".".$props[$i]['TITLE'], ${"value" . $props[$i]['ID']});
+                setGlobal($rec['TITLE'] . "." . $props[$i]['TITLE'], ${"value" . $props[$i]['ID']});
             }
         }
         $props[$i]['VALUE'] = isset($value['VALUE']) ? $value['VALUE'] : '';
@@ -204,7 +204,11 @@ if ($this->tab == 'methods') {
 
     if (defined('SETTINGS_CODEEDITOR_TURNONSETTINGS')) {
         $out['SETTINGS_CODEEDITOR_TURNONSETTINGS'] = SETTINGS_CODEEDITOR_TURNONSETTINGS;
+    }
+    if (defined('SETTINGS_CODEEDITOR_UPTOLINE')) {
         $out['SETTINGS_CODEEDITOR_UPTOLINE'] = SETTINGS_CODEEDITOR_UPTOLINE;
+    }
+    if (defined('SETTINGS_CODEEDITOR_SHOWERROR')) {
         $out['SETTINGS_CODEEDITOR_SHOWERROR'] = SETTINGS_CODEEDITOR_SHOWERROR;
     }
 
@@ -331,6 +335,6 @@ if (!isset($rec['ID']) && isset($this->class_id)) {
 
 $out['SCRIPTS'] = SQLSelect("SELECT ID, TITLE FROM scripts ORDER BY TITLE");
 
-if (isset($out['TITLE'])) {
+if (isset($out['TITLE']) && isset($this->owner) && isset($this->owner->owner) && isset($this->owner->owner->data)) {
     $this->owner->owner->data['TITLE'] = $out['TITLE'];
 }

@@ -1,6 +1,7 @@
 [#if EDIT_MODE=""#]
 [#if LINKS#]
 <p><#LANG_DEVICES_LINKS_ADDED#>:<p>
+<div class="dynamic_content" id="links_content">
 <table class="table">
     [#begin LINKS#]
     <tr[#if IS_ACTIVE!="1"#] style="background-color:lightgrey"[#endif#]>
@@ -12,18 +13,25 @@
         </td>
         <td>
             [#if COMMENT!=""#][#COMMENT#]<br/>[#endif#]
-            [#LINK_TYPE#] ([#LINK_SETTINGS#])
+            [#LINK_TYPE#] [#if LINK_SETTINGS!=""#]([#LINK_SETTINGS#])[#endif#]
             [#if HAS_RULE#]
             <i class="glyphicon glyphicon-lock"></i>
             [#endif#]
         </td>
+        <td>[#if LAST_EXECUTED!=""#]<#LANG_EXECUTED#>: [#LAST_EXECUTED#][#endif#]</td>
         <td>
+            [#if TIMER_NAME!=""#]
+            <#LANG_DEVICES_LINK_SWITCH_IT_PARAM_ACTION_DELAY#>: <span title="[#TIMER_NAME#]">[#RUNTIME#]</span> <a href="?view_mode=<#VIEW_MODE#>&id=[#DEVICE1_ID#]&tab=<#TAB#>&edit_mode=cancel_timer&timer=[#TIMER_NAME#]" onclick="return confirm('<#LANG_ARE_YOU_SURE#>');"><#LANG_CANCEL#></a>
+            [#endif#]
+        </td>
+        <td nowrap>
             <a href="?view_mode=<#VIEW_MODE#>&id=[#DEVICE1_ID#]&tab=<#TAB#>&edit_mode=edit_link&link_id=[#ID#]&link_name=[#LINK_TYPE#]" class="btn btn-default"><i class="glyphicon glyphicon-pencil"></i></a>
-            <a href="?view_mode=<#VIEW_MODE#>&id=[#DEVICE1_ID#]&tab=<#TAB#>&edit_mode=delete_link&link_id=[#ID#]" class="btn btn-default" onclick="return confirm('Are you sure?');"><i class="glyphicon glyphicon-remove"></i></a>
+            <a href="?view_mode=<#VIEW_MODE#>&id=[#DEVICE1_ID#]&tab=<#TAB#>&edit_mode=delete_link&link_id=[#ID#]" class="btn btn-default" onclick="return confirm('<#LANG_ARE_YOU_SURE#>');"><i class="glyphicon glyphicon-remove"></i></a>
         </td>
     </tr>
     [#end LINKS#]
 </table>
+<!--/dynamic_content--></div>
 [#else LINKS#]
 <p><#LANG_DEVICES_LINKS_NOT_ADDED#></p>
 [#endif LINKS#]

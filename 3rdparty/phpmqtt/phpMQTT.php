@@ -155,7 +155,7 @@ class phpMQTT
             return false;
         }
 
-        stream_set_timeout($this->socket, 5);
+        stream_set_timeout($this->socket, 30);
         stream_set_blocking($this->socket, 0);
 
         $i = 0;
@@ -387,7 +387,7 @@ class phpMQTT
      * @param int $qos
      * @param bool $retain
      */
-    public function publish($topic, $content, $qos = 0, $retain = false)
+    public function publish($topic, $content, $qos = 1, $retain = false)
     {
         $i = 0;
         $buffer = '';
@@ -417,7 +417,10 @@ class phpMQTT
         $head[0] = chr($cmd);
         $head .= $this->setmsglength($i);
 
-        fwrite($this->socket, $head, strlen($head));
+        $header_sent = fwrite($this->socket, $head, strlen($head));
+        if (!$header_sent) {
+            return false;
+        }
         return $this->_fwrite($buffer);
     }
 

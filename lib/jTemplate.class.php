@@ -17,7 +17,7 @@
  * jTemplates parser
  * @category Parser
  * @package Framework
- * @author Serge Dzheigalo <jey@tut.by>
+ * @author Serge Dzheigalo <sergejey@gmail.com>
  * @license http://opensource.org/licenses/mit-license.php MIT License
  * @link https://github.com/sergejey/majordomo/blob/master/lib/jTemplate.class.php
  */

@@ -5,7 +5,7 @@
  * Scripts
  *
  * @package MajorDoMo
- * @author Serge Dzheigalo <jey@tut.by> http://smartliving.ru/
+ * @author Serge Dzheigalo <sergejey@gmail.com> https://majordomohome.com/
  * @version 0.4 (wizard, 18:09:04 [Sep 13, 2010])
  */
 //

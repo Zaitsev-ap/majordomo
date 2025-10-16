@@ -4,8 +4,8 @@
  * Main project script
  *
  * @package MajorDoMo
- * @author Serge Dzheigalo <jey@tut.by>
- * @url http://smartliving.ru
+ * @author Serge Dzheigalo <sergejey@gmail.com>
+ * @url https://majordomohome.com
  * @version 1.2
  */
 

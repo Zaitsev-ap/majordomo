@@ -3,13 +3,13 @@
 * et language file
 *
 * @package MajorDoMo
-* @author Serge Dzheigalo <jey@tut.by> http://smartliving.ru/
+* @author Serge Dzheigalo <sergejey@gmail.com> https://majordomohome.com/
 * @version 1.0
 */
 
 $dictionary=array(
 'SETTINGS_SITE_LANGUAGE_CODE'=>'et_EE',
-'WIKI_URL'=>'http://smartliving.ru/',
+'WIKI_URL'=>'https://majordomohome.com/',
 'KB_URL'=>'https://kb.smartliving.ru/',
 'DEFAULT_COMPUTER_NAME'=>'Alisa',
 'WELCOME_GREETING'=>'Tere tulemast',

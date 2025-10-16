@@ -584,6 +584,18 @@ function getKeyData($object_id)
     return $add_description;
 }
 
+function returnTypedValue($value)
+{
+    if (is_numeric($value) && preg_match('/^[\-\d\.]+$/', $value)) {
+        if (strpos($value, '.') !== false) {
+            return floatval($value);
+        } elseif (!preg_match('/^0/', $value)) {
+            return (int)$value;
+        }
+    }
+    return $value;
+}
+
 /**
  * Summary of getGlobal
  * @param mixed $varname Variable name
@@ -612,7 +624,7 @@ function getGlobal($varname)
         $cached_value = checkFromCache($cached_name);
     }
     if ($cached_value !== false) {
-        return $cached_value;
+        return returnTypedValue($cached_value);
     }
 
     if ($class_name != '' && isModuleInstalled($class_name)) {
@@ -620,13 +632,13 @@ function getGlobal($varname)
         $module = new $class_name();
         if (method_exists($module, 'getModuleProperty')) {
             $data = $module->getModuleProperty($tmp[1] . '.' . $tmp[2]);
-            return $data;
+            return returnTypedValue($data);
         }
     } else {
         $obj = getObject($object_name);
         if ($obj) {
             $value = $obj->getProperty($varname);
-            return $value;
+            return returnTypedValue($value);
         }
     }
     return false;

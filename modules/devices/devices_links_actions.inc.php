@@ -153,7 +153,7 @@ for ($i = 0; $i < $total; $i++) {
 
     // -----------------------------------------------------------------
     if ($action_string != '') {
-        //DebMes("Action string: ".$action_string,'logic_test');
+        SQLExec('UPDATE devices_linked SET LAST_EXECUTED=NOW(), TIMER_NAME="' . $timer_name . '" WHERE ID=' . $links[$i]['ID']);
         try {
             $code = $action_string;
             setEvalCode($code);
