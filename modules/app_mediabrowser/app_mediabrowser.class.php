@@ -3,11 +3,7 @@
 * Media Browser Application
 *
 * @package MajorDoMo
-<<<<<<< HEAD
-* @author Serge Dzheigalo <jey@tut.by> http://smartliving.ru/
-=======
 * @author Serge Dzheigalo <sergejey@gmail.com> https://majordomohome.com/
->>>>>>> origin/master
 * @version 0.4 (05.09.2011)
 */
 //
@@ -390,11 +386,7 @@ function usual(&$out) {
 		   $file_ext = 'html';
 	   }
 //        $out['FULLFILE_URL']='http://'.$_SERVER['HTTP_HOST']."/module/app_mediabrowser.$file_ext?play=".urlsafe_b64encode($out['FULLFILE']);
-<<<<<<< HEAD
-	   $out['FULLFILE_URL']= "http://" . $_SERVER['HTTP_HOST']. "/module/app_mediabrowser.html?play=" . urlsafe_b64encode($out['FULLFILE']);
-=======
 	   $out['FULLFILE_URL']= "http://" . $_SERVER['HTTP_HOST']. "/module/app_mediabrowser.html?play=" . urlsafebase64encode($out['FULLFILE']);
->>>>>>> origin/master
    }
    //dprint($out['FULLFILE_URL']);
 
@@ -757,8 +749,4 @@ EOD;
 * TW9kdWxlIGNyZWF0ZWQgRmViIDIzLCAyMDA5IHVzaW5nIFNlcmdlIEouIHdpemFyZCAoQWN0aXZlVW5pdCBJbmMgd3d3LmFjdGl2ZXVuaXQuY29tKQ==
 *
 */
-<<<<<<< HEAD
 ?>
-=======
-?>
->>>>>>> origin/master

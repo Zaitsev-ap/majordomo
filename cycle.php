@@ -455,25 +455,14 @@ while (false !== ($result = $threads->iteration())) {
                 $title = $m[1];
                 $is_running[$title] = $id;
                 if (!isset($started_when[$title])) $started_when[$title] = time();
-<<<<<<< HEAD
-               // if ((time() - $started_when[$title]) > 30 && !in_array($title, $auto_restarts)) {
                 if ((time() - $started_when[$title]) > 60 && !in_array($title, $auto_restarts)) {
-                    DebMes("Adding $title to auto-recovery list", 'threads');
-=======
-                if ((time() - $started_when[$title]) > 30 && !in_array($title, $auto_restarts)) {
                     DebMes("Adding $title to auto-recovery list", 'boot');
->>>>>>> sergejey_majordomo/master
                     $auto_restarts[] = $title;
                 }
                 $cycle_updated_timestamp = $cyclesTimestamps[$title . 'Run'];
 
-<<<<<<< HEAD
-                if (empty($to_start[$title]) && $cycle_updated_timestamp && in_array($title, $auto_restarts) && ((time() - $cycle_updated_timestamp) > 30 * 60)) { 
-                    DebMes("Looks like $title is dead (updated: " . date('Y-m-d H:i:s', $cycle_updated_timestamp) . "). Need to recovery", 'threads');
-=======
                 if (!isset($to_start[$title]) && $cycle_updated_timestamp && in_array($title, $auto_restarts) && ((time() - $cycle_updated_timestamp) > 30 * 60)) { //
                     DebMes("Looks like $title is dead (updated: " . date('Y-m-d H:i:s', $cycle_updated_timestamp) . "). Need to recovery", 'boot');
->>>>>>> sergejey_majordomo/master
                     registerError('cycle_hang', $title);
                     setGlobal($title . 'Control', 'restart');
                 }
@@ -519,13 +508,9 @@ while (false !== ($result = $threads->iteration())) {
         if ($tm <= time()) {
             if (empty($is_running[$title])) {
                 $cmd = './scripts/' . $title . '.php';
-<<<<<<< HEAD
                 if (!file_exists($cmd)) 
                     $cmd = './scripts/' . $title . '.py';
-                DebMes("Starting service " . $title . ' (' . $cmd . ')', 'threads');
-=======
                 DebMes("Starting service " . $title . ' (' . $cmd . ')', 'boot');
->>>>>>> sergejey_majordomo/master
                 $pipe_id = $threads->newThread($cmd);
                 $is_running[$title] = $pipe_id;
                 $started_when[$title] = time();

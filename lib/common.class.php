@@ -439,13 +439,13 @@ function runScriptSafe($id, $params = 0)
     $run_SafeScript = '';
 
     if (is_array($params)) {
-        if (is_array($params['m_c_s']) && !empty($params['m_c_s'])) {
+        if (isset($params['m_c_s']) && is_array($params['m_c_s']) && !empty($params['m_c_s'])) {
             $call_stack = $params['m_c_s'];
         }
-        if (!empty($params['r_s_s'])) {
+        if (isset($params['r_s_s']) && !empty($params['r_s_s'])) {
             $run_SafeScript = $params['r_s_s'];
         }
-        if (!empty($params['raiseEvent'])) $raiseEvent = $params['raiseEvent'];
+        $raiseEvent = $params['raiseEvent'];
         unset($params['raiseEvent']);
         unset($params['r_s_m']);
         unset($params['m_c_s']);
@@ -456,11 +456,7 @@ function runScriptSafe($id, $params = 0)
             $call_stack = $_GET['m_c_s'];
         }
         $raiseEvent = $_GET['raiseEvent'];
-<<<<<<< HEAD
-        if (!empty($_GET['r_s_s'])) $run_SafeScript = $_GET['r_s_s'];
-=======
         $run_SafeScript = isset($_GET['r_s_s']) ? $_GET['r_s_s'] : false;
->>>>>>> sergejey_majordomo/master
         if (is_array($call_stack) && in_array($current_call, $call_stack)) {
             $call_stack[] = $current_call;
             DebMes("Warning: cross-linked call of " . $current_call . "\nlog:\n" . implode(" -> \n", $call_stack));
