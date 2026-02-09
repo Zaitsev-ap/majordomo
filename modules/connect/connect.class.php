@@ -162,6 +162,10 @@ class connect extends module
         $url = 'https://connect.smartliving.ru/sync_device_data.php';
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
+        if ($this->config['CONNECT_INSECURE']) {
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        }
         curl_setopt($ch, CURLOPT_HEADER, array("Content-Type:multipart/form-data"));
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
@@ -217,6 +221,10 @@ class connect extends module
             DebMes("Cloudbackup file $dest_file to $url", 'cloudbackup');
 
             curl_setopt($ch, CURLOPT_URL, $url);
+            if ($this->config['CONNECT_INSECURE']) {
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+            }
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -415,6 +423,10 @@ class connect extends module
         $url .= "&local_url=" . urlencode(getLocalIp());
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
+        if ($this->config['CONNECT_INSECURE']) {
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        }
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
@@ -452,6 +464,10 @@ class connect extends module
         //DebMes("$method request to $url: ".$msg,'connect_post');
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
+        if ($this->config['CONNECT_INSECURE']) {
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        }
         if ($method != 'GET') {
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
             //curl_setopt($ch, CURLOPT_POST, 1);
@@ -543,6 +559,10 @@ class connect extends module
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
+        if ($this->config['CONNECT_INSECURE']) {
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        }
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
@@ -600,10 +620,14 @@ class connect extends module
         $fields['devices_data'] = json_encode($devices);
         $fields['local_url'] = getLocalIp();
 
-        DebMes("Posting all devices ($total_devices = ".strlen($fields['devices_data'])." bytes) to $url",'device_sync');
+        DebMes("Posting all devices ($total_devices = " . strlen($fields['devices_data']) . " bytes) to $url", 'device_sync');
         //DebMes($fields['devices_data'],'device_sync');
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
+        if ($this->config['CONNECT_INSECURE']) {
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        }
         curl_setopt($ch, CURLOPT_POST, count($fields));
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -652,6 +676,10 @@ class connect extends module
         //DebMes("Posting $property = $value to $url",'device_sync');
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
+        if ($this->config['CONNECT_INSECURE']) {
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        }
         curl_setopt($ch, CURLOPT_POST, count($fields));
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -693,6 +721,10 @@ class connect extends module
         $ch = curl_init();
         //set the url, number of POST vars, POST data
         curl_setopt($ch, CURLOPT_URL, $url);
+        if ($this->config['CONNECT_INSECURE']) {
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        }
         curl_setopt($ch, CURLOPT_POST, count($fields));
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -765,6 +797,10 @@ class connect extends module
         //open connection
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
+        if ($this->config['CONNECT_INSECURE']) {
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        }
         curl_setopt($ch, CURLOPT_POST, count($fields));
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -837,6 +873,10 @@ class connect extends module
         $ch = curl_init();
         //set the url, number of POST vars, POST data
         curl_setopt($ch, CURLOPT_URL, $url);
+        if ($this->config['CONNECT_INSECURE']) {
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        }
         curl_setopt($ch, CURLOPT_POST, count($fields));
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -972,6 +1012,10 @@ class connect extends module
         $ch = curl_init();
         //set the url, number of POST vars, POST data
         curl_setopt($ch, CURLOPT_URL, $url);
+        if ($this->config['CONNECT_INSECURE']) {
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        }
         curl_setopt($ch, CURLOPT_POST, count($fields));
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);

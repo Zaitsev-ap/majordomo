@@ -9,11 +9,11 @@ if (isset($this->owner->room_id) && $this->owner->room_id) {
     $session->data['SHOUT_ROOM_ID'] = $this->owner->room_id;
 }
 
-global $msg;
-global $getdata;
-global $clear;
-global $room_id;
-global $importance;
+$msg = gr('msg');
+$getdata = gr('getdata');
+$clear = gr('clear', 'int');
+$room_id = gr('room_id', 'int');
+$importance = gr('importance', 'int');
 
 if ($this->action == 'admin' && $clear) {
     SQLExec("DELETE FROM shouts");
@@ -38,24 +38,7 @@ if ($this->action == '' && $session->data['SITE_USER_ID'] && $msg != '') {
         }
     }
     say(htmlspecialchars($msg), 0, $session->data['SITE_USER_ID'], 'terminal' . $terminal_rec['ID']);
-    /*
-    $rec=array();
-    $rec['ROOM_ID']=(int)$room_id;
-    $rec['MEMBER_ID']=$session->data['logged_user'];
-    $rec['MESSAGE']=htmlspecialchars($msg);
-    $rec['ADDED']=date('Y-m-d H:i:s');
-    SQLInsert('shouts', $rec);
-    */
 
-
-    /*
-    include_once(DIR_MODULES.'patterns/patterns.class.php');
-    $pt=new patterns();
-    $res=$pt->checkAllPatterns($rec['MEMBER_ID']);
-    if (!$res) {
-     processCommand($msg);
-    }
-    */
     $getdata = 1;
 }
 
@@ -106,7 +89,7 @@ if ($this->action != 'admin') {
     $limit = "LIMIT 50";
 }
 
-global $limit;
+$limit = gr('limit', 'int');
 if ($limit) {
     $this->limit = $limit;
 }
@@ -176,8 +159,8 @@ if ($res[0]['ID']) {
         $txtdata .= "<span$stl>" . $res[$i]['DAT'] . " <b>" . $res[$i]['NAME'] . "</b>: " . nl2br($res[$i]['MESSAGE']) . "</span><br>";
         if ($res[$i]['IMAGE'] != '' && file_exists($res[$i]['IMAGE'])) {
             if (preg_match('/^\//is', $res[$i]['IMAGE'])) {
-            $res[$i]['IMAGE'] = str_replace(ROOT, ROOTHTML, $res[$i]['IMAGE']);
-        }
+                $res[$i]['IMAGE'] = str_replace(ROOT, ROOTHTML, $res[$i]['IMAGE']);
+            }
             $txtdata .= "<div class='thumbnail' style='max-width: 600px'><img src='" . $res[$i]['IMAGE'] . "' alt=''/></div>";
         }
     }
@@ -188,10 +171,10 @@ if ($res[0]['ID']) {
 }
 
 if (!isset($session->data['SHOUT_ROOM_ID'])) {
-    $session->data['SHOUT_ROOM_ID']=0;
+    $session->data['SHOUT_ROOM_ID'] = 0;
 }
 if (!isset($session->data['logged_user'])) {
-    $session->data['logged_user']=0;
+    $session->data['logged_user'] = 0;
 }
 $rooms = SQLSelect("SELECT * FROM shoutrooms WHERE (IS_PUBLIC=1) OR (IS_PUBLIC=0 AND ADDED_BY=" . (int)$session->data['logged_user'] . ") OR (IS_PUBLIC=0 AND ID=" . (int)$session->data['SHOUT_ROOM_ID'] . ") ORDER BY PRIORITY DESC, TITLE");
 if (isset($rooms[0])) {
@@ -215,4 +198,3 @@ if ($this->action == '' && $getdata != '') {
 }
 
 
-?>

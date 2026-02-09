@@ -38,29 +38,30 @@ if ($openableSensors != '') {
     $windowIsOpen = false;
 }
 
-$currentRelayStatus = $this->getProperty('relay_status');
-if ($windowIsOpen) {
-    $targetRelayStatus = 0;
-} else {
-    $targetRelayStatus = $currentRelayStatus;
-    if ($currentTemperature > ($targetTemperature + $threshold)) { // temperature too high
-        if ($ncno == 'no') {
-            $targetRelayStatus = 1; // turn on (cooling on)
-        } else {
-            $targetRelayStatus = 0; // turn off (heating off)
-        }
-    } elseif ($currentTemperature < ($targetTemperature - $threshold)) { // temperature too low
-        if ($ncno == 'no') {
-            $targetRelayStatus = 0; // turn off (cooling off)
-        } else {
-            $targetRelayStatus = 1; // turn on (heating on)
+$readonly = $this->getProperty('relay_readonly');
+if (!$readonly) {
+    $currentRelayStatus = $this->getProperty('relay_status');
+    if ($windowIsOpen) {
+        $targetRelayStatus = 0;
+    } else {
+        $targetRelayStatus = $currentRelayStatus;
+        if ($currentTemperature > ($targetTemperature + $threshold)) { // temperature too high
+            if ($ncno == 'no') {
+                $targetRelayStatus = 1; // turn on (cooling on)
+            } else {
+                $targetRelayStatus = 0; // turn off (heating off)
+            }
+        } elseif ($currentTemperature < ($targetTemperature - $threshold)) { // temperature too low
+            if ($ncno == 'no') {
+                $targetRelayStatus = 0; // turn off (cooling off)
+            } else {
+                $targetRelayStatus = 1; // turn on (heating on)
+            }
         }
     }
-}
-
-
-if ($targetRelayStatus != $currentRelayStatus) {
-    $this->setProperty('relay_status', $targetRelayStatus);
+    if ($targetRelayStatus != $currentRelayStatus) {
+        $this->setProperty('relay_status', $targetRelayStatus);
+    }
 }
 
 include_once(dirname(__FILE__) . '/devices.class.php');

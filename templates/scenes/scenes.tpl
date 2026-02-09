@@ -586,7 +586,7 @@ $(".draggable" ).draggable({ cursor: "move", snap: true , snapTolerance: 5, grid
                 let maxElementYTitle = '';
 
 
-                $('.scene_element, .element_state, .scene_wallpaper').each(function() {
+                $('.scene_element, .element_state').each(function() {
                     let x = $( this ).get(0).getBoundingClientRect().right+20;
                     let y = $( this ).get(0).getBoundingClientRect().bottom+20;
                     if (x>maxElementX) {

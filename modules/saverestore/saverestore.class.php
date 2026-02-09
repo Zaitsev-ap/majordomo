@@ -201,7 +201,7 @@ class saverestore extends module
 
         $aditional_git_urls = gr('aditional_git_urls');
         $out['ADITIONAL_GIT_URLS'] = array();
-        if(is_array($aditional_git_urls)){
+        if (is_array($aditional_git_urls)) {
             foreach ($aditional_git_urls as $url => $title) {
                 $tmp = array();
                 $tmp['URL'] = $url;
@@ -1412,7 +1412,9 @@ class saverestore extends module
                 }
             }
 
-            if (file_exists(DOC_ROOT . DIRECTORY_SEPARATOR . 'cms/saverestore/temp' . $folder . '/config.php')) {
+            if (file_exists(DOC_ROOT . DIRECTORY_SEPARATOR . '/scripts/cycle_db_save.php') &&
+                file_exists(DOC_ROOT . DIRECTORY_SEPARATOR . 'cms/saverestore/temp' . $folder . '/scripts/periodical_db_save.php')
+            ) {
                 if ($iframe) {
                     echonow('<div><i style="font-size: 7pt;" class="glyphicon glyphicon-usd"></i> ' . LANG_UPDATEBACKUP_PATCHING . ' periodical_db_save.php...</div>');
                 }

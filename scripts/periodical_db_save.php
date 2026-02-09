@@ -49,36 +49,41 @@ if (defined('PATH_TO_MYSQLDUMP')) {
         $mysqlDumpPath = "/usr/bin/mysqldump";
 }
 
-$mysqlDumpParam = " -h " . DB_HOST . " --user=" . DB_USER . " --password=" . DB_PASSWORD;
+$mysqlDumpParam = " -h " . DB_HOST . " --user=\"" . DB_USER . "\" --password=\"" . DB_PASSWORD . "\"";
 $mysqlDumpParam .= " --no-create-db --add-drop-table " . DB_NAME;
 
 $backups_in_row = 0;
+DebMes('DB Backup script started.', 'db_backup');
 
 while (1) {
     setGlobal((str_replace('.php', '', basename(__FILE__))) . 'Run', time(), 1);
 
     if ((time() - $last_backup_main) > $timeout_main || isRebootRequired()) {
+        $last_backup_main = time();
+        debmes('DB Backup started (main db)', 'db_backup');
         echo "Running main db save...";
         if (file_exists($filename_main)) rename($filename_main, $filename_main . '.prev');
         $add_params = '--ignore-table=' . DB_NAME . '.phistory --ignore-table=' . DB_NAME . '.cached_values';
         $dump_file = $filename_main . '.tmp';
-        exec($mysqlDumpPath . $mysqlDumpParam . " " . $add_params . "> " . $dump_file);
+        exec($mysqlDumpPath . $mysqlDumpParam . " " . $add_params . "> " . $dump_file, $output);
         if (file_exists($dump_file) && filesize($dump_file) > 0) {
             rename($filename_main . '.tmp', $filename_main);
-            $last_backup_main = time();
             $backups_in_row++;
+            debmes('DB Backup OK.', 'db_backup');
             echo "OK\n";
         } else {
             echo "DB Backup failed\n";
-            debmes('DB Backup failed', 'db_backup');
+            debmes('DB Backup failed: ' . implode("\n", $output), 'db_backup');
             unlink($filename_main . '.tmp');
         }
-        if ($backups_in_row >= 4 && is_dir('/tmp/mysql')) {
-            safe_exec('cp -rf /tmp/mysql/* /var/lib/mysql');
+        if ($backups_in_row >= 10 && is_dir('/tmp/mysql')) {
+            debmes('Copying /tmp/mysql to /var/lib/mysql', 'db_backup');
+            safe_exec('sudo cp -rf /tmp/mysql/* /var/lib/mysql');
             $backups_in_row = 0;
         }
     }
     if ((time() - $last_backup_history) > $timeout_history || isRebootRequired()) {
+        debmes('DB Backup started (history)', 'db_backup');
         echo "Running history db save...";
         if (file_exists($filename_history)) rename($filename_history, $filename_history . '.prev');
         $add_params = 'phistory';
@@ -88,6 +93,7 @@ while (1) {
             rename($dump_file, $filename_history);
             $last_backup_history = time();
             echo "OK\n";
+            debmes('History Backup OK.', 'db_backup');
         } else {
             echo "DB History Backup failed\n";
             debmes('DB History Backup failed', 'db_backup');

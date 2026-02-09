@@ -9,6 +9,7 @@ $this->device_types = array(
             'humidity' => array('DESCRIPTION' => 'Humidity'),
             'SomebodyHere' => array('DESCRIPTION' => 'Somebody in the room'),
             'IdleDelay' => array('DESCRIPTION' => LANG_DEVICES_MOTION_TIMEOUT, '_CONFIG_TYPE' => 'text', '_CONFIG_HELP' => 'SdRoomIdleDelay'),
+            'turnedOffAutomatically' => array('DESCRIPTION' => 'List of devices turned off automatically'),
             'turnOffLightsOnIdle' => array('DESCRIPTION' => LANG_DEVICES_TURNOFF_LIGHTS_ON_IDLE, '_CONFIG_TYPE' => 'yesno', '_CONFIG_HELP' => 'SdRoomIdleTurnoffLights'),
         ),
         'METHODS' => array(
@@ -82,6 +83,7 @@ $this->device_types = array(
         'CLASS' => 'SGroups',
         'PROPERTIES' => array(
             'groupName' => array('DESCRIPTION' => 'Group system name'),
+            'delay' => array('DESCRIPTION' => LANG_DEVICES_GROUP_OPERATION_DELAY),
         ),
         'METHODS' => array(
             'turnOn' => array('DESCRIPTION' => LANG_DEVICES_TURN_ON),
@@ -148,6 +150,7 @@ $this->device_types = array(
             'threshold' => array('DESCRIPTION' => LANG_DEVICES_THERMOSTAT_THRESHOLD, '_CONFIG_TYPE' => 'text', 'ONCHANGE' => 'valueUpdated', '_CONFIG_HELP' => 'SdThermostat'),
             'increment' => array('DESCRIPTION' => LANG_DEVICES_THERMOSTAT_INCREMENT, '_CONFIG_TYPE' => 'text', '_CONFIG_HELP' => 'SdThermostat'),
             'ncno' => array('DESCRIPTION' => LANG_DEVICES_NCNO, '_CONFIG_TYPE' => 'select', '_CONFIG_OPTIONS' => 'nc=Normal Close (Heating),no=Normal Open (Cooling)', '_CONFIG_HELP' => 'SdThermostat'),
+            'relay_readonly' => array('DESCRIPTION' => LANG_DEVICES_THERMOSTAT_RELAY_READONLY, '_CONFIG_TYPE' => 'yesno'),
             'openableSensors' => array('DESCRIPTION' => LANG_DEVICES_THERMOSTAT_OPENABLE, '_CONFIG_TYPE' => 'devices:SOpenable, SOpenClose', '_CONFIG_HELP' => 'SdOpenableSensors'),
             'windowIsOpen' => array('KEEP_HISTORY' => 30),
             'disabled' => array('DESCRIPTION' => 'Disabled'),

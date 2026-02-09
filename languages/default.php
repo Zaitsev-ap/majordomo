@@ -1214,6 +1214,7 @@ $dictionary = array(
     'DEVICES_GROUP_STATE' => 'Group state',
     'DEVICES_GROUP_STATE_SAVE' => 'Save',
     'DEVICES_GROUP_STATE_RESTORE' => 'Restore',
+    'DEVICES_GROUP_OPERATION_DELAY' => 'Group operation delay (sec)',
 
     'DEVICES_IS_ON' => 'is ON',
     'DEVICES_IS_CLOSED' => 'is Closed',
@@ -1364,6 +1365,7 @@ $dictionary = array(
     'DEVICES_THERMOSTAT_RELAY_STATUS' => 'Relay status',
     'DEVICES_THERMOSTAT_SET_TARGET_TEMPERATURE' => 'Set target temperature',
     'DEVICES_THERMOSTAT_OPENABLE' => 'Linked Doors/windows',
+    'DEVICES_THERMOSTAT_RELAY_READONLY' => 'Read-only mode for heating/cooling relay',
     'DEVICES_ALL_BY_TYPE' => 'List all by types',
     'DEVICES_ALL_BY_ROOM' => 'List all by rooms',
     'DEVICES_LOAD_TIMEOUT' => 'Load status timeout',

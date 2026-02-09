@@ -603,6 +603,7 @@ function returnTypedValue($value)
  */
 function getGlobal($varname)
 {
+    $varname = trim($varname);
     $tmp = explode('.', $varname);
 
     $class_name = '';
@@ -1142,6 +1143,8 @@ function cleanUpPropertyHistory($property_id, $max_age_days)
  */
 function setGlobal($varname, $value, $no_linked = 0, $source = '')
 {
+
+    $varname = trim($varname);
     if (strpos($varname, 'cycle_') === 0) {
         saveCycleToCache($varname, $value);
         return;
@@ -1177,6 +1180,7 @@ function setGlobal($varname, $value, $no_linked = 0, $source = '')
  */
 function callMethod($method_name, $params = 0)
 {
+    $method_name = trim($method_name);
     $tmp = explode('.', $method_name);
     if (isset($tmp[2])) {
         $object_name = $tmp[0] . '.' . $tmp[1];
@@ -1263,7 +1267,7 @@ function callAPI($api_url, $method = 'GET', $params = 0, $wait_response = false)
     }
 
 
-    startMeasure('callAPI '.$api_url);
+    startMeasure('callAPI ' . $api_url);
     if (!is_array($params)) {
         $params = array();
     }
@@ -1304,7 +1308,7 @@ function callAPI($api_url, $method = 'GET', $params = 0, $wait_response = false)
         //DebMes("Call to $url finished with error: \n" . $errorInfo . "\n" . json_encode($info), 'callAPI_errors');
     }
 
-    endMeasure('callAPI '.$api_url);
+    endMeasure('callAPI ' . $api_url);
 
     if ($is_child) {
         exit();

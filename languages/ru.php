@@ -1212,6 +1212,7 @@ $dictionary = array(
     'DEVICES_GROUP_STATE' => 'Состояние группы',
     'DEVICES_GROUP_STATE_SAVE' => 'Сохранить',
     'DEVICES_GROUP_STATE_RESTORE' => 'Восстановить',
+    'DEVICES_GROUP_OPERATION_DELAY' => 'Задержка исполнения команд (сек)',
 
     'DEVICES_IS_ON' => 'Включено',
     'DEVICES_IS_CLOSED' => 'Закрыто',
@@ -1363,6 +1364,7 @@ $dictionary = array(
     'DEVICES_THERMOSTAT_RELAY_STATUS' => 'Статус реле',
     'DEVICES_THERMOSTAT_SET_TARGET_TEMPERATURE' => 'Установить желаемую температуру',
     'DEVICES_THERMOSTAT_OPENABLE' => 'Окна/двери',
+    'DEVICES_THERMOSTAT_RELAY_READONLY' => 'Режим "только чтение" для реле нагрева/охлаждения',
     'DEVICES_ALL_BY_TYPE' => 'Все по типам',
     'DEVICES_ALL_BY_ROOM' => 'Все по комнатам',
     'DEVICES_LOAD_TIMEOUT'=>'Таймер изменения статуса нагрузки',

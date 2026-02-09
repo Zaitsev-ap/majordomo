@@ -459,7 +459,7 @@ function runScriptSafe($id, $params = 0)
         $run_SafeScript = isset($_GET['r_s_s']) ? $_GET['r_s_s'] : false;
         if (is_array($call_stack) && in_array($current_call, $call_stack)) {
             $call_stack[] = $current_call;
-            DebMes("Warning: cross-linked call of " . $current_call . "\nlog:\n" . implode(" -> \n", $call_stack));
+            DebMes("Warning: cross-linked call of " . $current_call . "\nlog:\n" . implode(" -> \n", $call_stack), 'scripts');
             return 0;
         }
     }

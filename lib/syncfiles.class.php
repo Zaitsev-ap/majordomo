@@ -199,8 +199,13 @@ function checkfile($path, $move)
  */
 function copyFile($src, $dst)
 {
-    global $files_copied;
 
+    $path = pathinfo($dst);
+    if (!is_dir($path['dirname'])) {
+        mkdir($path['dirname'], 0777, true);
+    }
+
+    global $files_copied;
     $size_limit = 2000 * 1024 * 1024;
 
     $fs = filesize($src);

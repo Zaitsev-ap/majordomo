@@ -443,6 +443,7 @@ class scripts extends module
                 continue;
             }
             DebMes("Running scheduled script " . $rec['TITLE'], 'scripts');
+            SQLExec("UPDATE scripts SET EXECUTED='" . date('Y-m-d H:i:s') . "' WHERE ID='" . $rec['ID'] . "'");
             runScriptSafe($rec['TITLE']);
             $rec['DIFF'] = $diff;
         }

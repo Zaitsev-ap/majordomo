@@ -596,6 +596,7 @@ class objects extends module
         //echo "<hr>";
         startMeasure('callMethod');
 
+        $name = trim($name);
         $original_method_name = $this->object_title . '.' . $name;
 
         startMeasure('callMethod (' . $original_method_name . ')');

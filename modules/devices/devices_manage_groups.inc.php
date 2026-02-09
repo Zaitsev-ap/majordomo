@@ -54,12 +54,23 @@ if ($id) {
                 SQLUpdate('devices_groups',$rec);
             }
             $this->updateGroupObjects();
+
+            $object_rec=getObject('group'.$rec['SYS_NAME']);
+            if ($object_rec->object_title) {
+                $delay = gr('delay','float');
+                sg($object_rec->object_title.'.delay', $delay);
+            }
+
             $this->redirect("?view_mode=".$this->view_mode);
         }
     }
 
     if ($rec['ID']) {
         outHash($rec,$out);
+        $object_rec=getObject('group'.$rec['SYS_NAME']);
+        if ($object_rec->object_title) {
+            $out['DELAY']=gg($object_rec->object_title.'.delay');
+        }
     }
 
     $types=array();

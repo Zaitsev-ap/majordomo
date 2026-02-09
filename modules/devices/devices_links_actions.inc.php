@@ -5,14 +5,13 @@ startMeasure('homebridge_update');
 $debug_sync = 0;
 //DebMes("homebridgesync for ".$device1['TITLE'],'homebridge');
 if (!$device1['SYSTEM_DEVICE'] && !$device1['ARCHIVED']) {
-	if($this->isHomeBridgeAvailable()){
-		// send updated status to HomeKit
-		include DIR_MODULES . 'devices/homebridgeSendUpdate.inc.php';
-	}
-	else if(isModuleInstalled('homekit')){
-		// send updated status to module HomeKit
-		include DIR_MODULES . 'homekit/homebridgeSendUpdate.inc.php';
-	}
+    if ($this->isHomeBridgeAvailable()) {
+        // send updated status to HomeKit
+        include DIR_MODULES . 'devices/homebridgeSendUpdate.inc.php';
+    } else if (isModuleInstalled('homekit')) {
+        // send updated status to module HomeKit
+        include DIR_MODULES . 'homekit/homebridgeSendUpdate.inc.php';
+    }
 }
 endMeasure('homebridge_update');
 
@@ -79,7 +78,7 @@ for ($i = 0; $i < $total; $i++) {
             $action_string .= '}';
         }
     } elseif ($link_type == 'set_color') {
-        $action_string = 'callMethodSafe("' . $object . '.setColor' . '",array("color"=>"' . $settings['action_color'] . '","link_source"=>"' . $device1['LINKED_OBJECT'] . '"));';
+        $action_string = 'callMethodSafe("' . $object . '.setColor' . '",array("color"=>"' . processTitle($settings['action_color']) . '","link_source"=>"' . $device1['LINKED_OBJECT'] . '"));';
         if ($settings['action_delay'] != '') {
             $settings['action_delay'] = (int)processTitle($settings['action_delay']);
             if ($settings['action_delay'] > 0) {
@@ -100,7 +99,7 @@ for ($i = 0; $i < $total; $i++) {
         }
 
         if ($settings['source_value_type'] != '') {
-            $period = (int)$settings['source_value_time'];
+            $period = (int)processTitle($settings['source_value_time']);
             if ($period < 1) $period = 1;
             if ($settings['source_value_type'] == 'avg') {
                 $value = getHistoryAvg($device1['LINKED_OBJECT'] . '.value', (-1) * $period);
@@ -111,9 +110,9 @@ for ($i = 0; $i < $total; $i++) {
             }
         }
 
-        if ($settings['condition_type'] == 'above' && $value >= (float)$settings['condition_value']) {
+        if ($settings['condition_type'] == 'above' && $value >= (float)processTitle($settings['condition_value'])) {
             //do the action
-        } elseif ($settings['condition_type'] == 'below' && $value < (float)$settings['condition_value']) {
+        } elseif ($settings['condition_type'] == 'below' && $value < (float)processTitle($settings['condition_value'])) {
             //do the action
         } else {
             //do nothing

@@ -479,15 +479,34 @@ function DebMes($errorMessage, $logLevel = "debug")
         umask(0);
         mkdir($path, 0777);
     }
+
+    $today_path = $path . '/' . date('Y-m-d');
+    if (!is_dir($today_path)) {
+        umask(0);
+        mkdir($today_path, 0777);
+    }
+
+    $tmp = explode('/', $logLevel);
+    $total = count($tmp);
+    for ($i = 0; $i < $total; $i++) {
+        $today_path .= '/' . $tmp[$i];
+        if (!is_dir($today_path) && ($i < $total - 1)) {
+            umask(0);
+            mkdir($today_path, 0777);
+        }
+    }
+    $today_file = $today_path . '.log';
+
     if (is_array($errorMessage) || is_object($errorMessage)) {
         $errorMessage = json_encode($errorMessage, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     }
 
-    if ($logLevel != 'debug') {
-        $today_file = $path . '/' . date('Y-m-d') . '_' . $logLevel . '.log';
-    } else {
-        $today_file = $path . '/' . date('Y-m-d') . '.log';
-    }
+
+    //if ($logLevel != 'debug') {
+    //    $today_file = $path . '/' . date('Y-m-d') . '_' . $logLevel . '.log';
+    //} else {
+    //    $today_file = $path . '/' . date('Y-m-d') . '.log';
+    //}
 
     if (file_exists($today_file) && filesize($today_file) > $max_log_size) return;
 

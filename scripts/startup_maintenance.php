@@ -47,7 +47,7 @@ if (!defined('LOG_FILES_EXPIRE')) {
     define('LOG_FILES_EXPIRE', 5);
 }
 if (!defined('BACKUP_FILES_EXPIRE')) {
-    define('BACKUP_FILES_EXPIRE', 10);
+    define('BACKUP_FILES_EXPIRE', 30);
 }
 if (!defined('CACHED_FILES_EXPIRE')) {
     define('CACHED_FILES_EXPIRE', 30);
@@ -69,13 +69,15 @@ if (defined('SETTINGS_SYSTEM_DEBMES_PATH') && SETTINGS_SYSTEM_DEBMES_PATH != '')
 }
 
 DebMes("Checking log files.", 'maintenance');
-$dir = $path . "/";
-foreach (glob($dir . "*") as $file) {
-    if (filemtime($file) < time() - LOG_FILES_EXPIRE * 24 * 60 * 60) {
-        DebMes("Removing log file " . $file, 'maintenance');
-        @unlink($file);
+getDirTree($path, $files);
+foreach ($files as $file) {
+    if (filemtime($file['FILENAME']) < time() - LOG_FILES_EXPIRE * 24 * 60 * 60) {
+        DebMes("Removing log file " . $file['FILENAME'], 'maintenance');
+        unlink($file['FILENAME']);
     }
 }
+removeEmptySubFolders($path);
+
 
 if ($full_backup) {
     DebMes("Backing up files...", 'maintenance');
