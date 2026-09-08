@@ -19,12 +19,6 @@ echo date("H:i:s") . " running " . basename(__FILE__) . PHP_EOL;
 
 $checked_time = 0;
 $latest_sent = time();
-<<<<<<< HEAD
-//$cycleVarName = 'ThisComputer.' . str_replace('.php', '', basename(__FILE__)) . 'Run';
-$cycleVarNameRUN=str_replace('.php', '', basename(__FILE__)) . "Run";
-setGlobal($cycleVarNameRUN, $latest_sent, 1);
-
-=======
 setGlobal((str_replace('.php', '', basename(__FILE__))) . 'Run', time(), 1);
 $cycleVarName = 'ThisComputer.' . str_replace('.php', '', basename(__FILE__)) . 'Run';
 if (defined('SETTINGS_SYSTEM_WEBSOCKETS_RESTART_TIMEOUT') && (int)SETTINGS_SYSTEM_WEBSOCKETS_RESTART_TIMEOUT >= 0) {
@@ -38,32 +32,10 @@ if (defined('WEBSOCKETS_QUEUE_LIMIT') && (int)WEBSOCKETS_QUEUE_LIMIT > 0) {
 } else {
     $websocket_queue_limit = 500;
 }
->>>>>>> pr-2
 
 clearTimeout('restartWebSocket');
 
 while (1) {
-<<<<<<< HEAD
-    $time = time();
-    if ($checked_time != $time) {
-        $checked_time = $time;
-        $queue = SQLSelect("SELECT * FROM cached_ws");
-        if (isset($queue[0]['PROPERTY'])) {
-            SQLTruncateTable('cached_ws');
-            $total = count($queue);
-            $sent_ok = 1;
-            $properties = array();
-            $values = array();
-            for ($i = 0; $i < $total; $i++) {
-                //$queue[$i]['PROPERTY']=mb_strtolower($queue[$i]['PROPERTY'],'UTF-8');
-                if ($queue[$i]['POST_ACTION'] == 'PostProperty') {
-                    $properties[] = $queue[$i]['PROPERTY'];
-                    $values[] = $queue[$i]['DATAVALUE'];
-                } else {
-                    $dataValue = $queue[$i]['DATAVALUE'];
-                    if (is_array(json_decode($dataValue, true))) {
-                        $dataValue = json_decode($dataValue, true);
-=======
     if ($checked_time != time()) {
         $checked_time = time();
         try {
@@ -83,7 +55,6 @@ while (1) {
 
                     if ($property === '') {
                         continue;
->>>>>>> pr-2
                     }
 
                     if ($postAction == 'PostProperty') {
@@ -134,22 +105,10 @@ while (1) {
                     echo date("H:i:s") . ' Error while posting to websocket.' . "\n";
                 }
             }
-<<<<<<< HEAD
-
-            if ($sent_ok) {
-                $latest_sent = $time;
-                // saveToCache("MJD:$cycleVarName", $latest_sent);
-                setGlobal($cycleVarNameRUN, $latest_sent, 1);
-                //setTimeout('restartWebSocket', 'sg("cycle_websocketsRun","");sg("cycle_websocketsControl","restart");', 5 * 60);
-            } else {
-                echo date("H:i:s") . ' Error while posting to websocket.' . "\n";
-            }
-=======
             unset($queue, $properties, $values, $post_property_keys);
         } catch (Throwable $e) {
             DebMes('cycle_wscache error: ' . $e->getMessage(), 'websockets');
             echo date("H:i:s") . ' cycle_wscache exception: ' . $e->getMessage() . "\n";
->>>>>>> pr-2
         }
     }
     if (isRebootRequired() || isset($_GET['onetime'])) {

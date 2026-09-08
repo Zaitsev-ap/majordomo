@@ -580,30 +580,18 @@ while (false !== ($result = $threads->iteration())) {
     }
 
     if (!empty($result)) {
-<<<<<<< HEAD
-        //$closePattern = '/THREAD CLOSED:.+?(\.\/scripts\/cycle\_.+?\.php)/is';
-        $closePattern = '/THREAD CLOSED:.+?(\.\/scripts\/cycle\_.+?\.(php|py))/is';
-        if (preg_match_all($closePattern, $result, $matches) && !isRebootRequired()) {
-            $total_m = count($matches[1]);
-=======
         $closePattern = '/THREAD CLOSED:\s*\[(.*?)\](?:\s+EXIT_CODE=([-\d]+)\s+TERM_SIG=([-\d]+)\s+STOP_SIG=([-\d]+))?/is';
         if (preg_match_all($closePattern, $result, $matches, PREG_SET_ORDER) && !isRebootRequired()) {
             $total_m = count($matches);
->>>>>>> pr-2
             for ($im = 0; $im < $total_m; $im++) {
                 $closed_thread = $matches[$im][1];
                 $exit_code = isset($matches[$im][2]) && $matches[$im][2] !== '' ? (int)$matches[$im][2] : null;
                 $term_sig = isset($matches[$im][3]) && $matches[$im][3] !== '' ? (int)$matches[$im][3] : null;
                 $cycle_title = '';
                 $need_restart = 0;
-<<<<<<< HEAD
-                //if (preg_match('/(cycle_.+?)\.php/is', $closed_thread, $m)) {
-                if (preg_match('/(cycle_.+?)\.(php|py)/is', $closed_thread, $m)) {
-=======
                 $last_error = '';
                 $stop_requested = false;
-                if (preg_match('/(cycle_.+?)\.php/is', $closed_thread, $m)) {
->>>>>>> pr-2
+                if (preg_match('/(cycle_.+?)\.(php|py)/is', $closed_thread, $m)) {
                     $cycle_title = $m[1];
                     $last_error = checkCycleFromCache($cycle_title . 'LastError');
                     if ($last_error === false) {

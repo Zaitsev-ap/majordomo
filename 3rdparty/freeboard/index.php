@@ -112,11 +112,7 @@ if ($_GET['theme']) {
         ?>
         <?php if($_GET['layout_id']!='') {?>
         var layoutId='<?php
-<<<<<<< HEAD
-            echo $_GET['layout_id'];
-=======
             echo (int)$_GET['layout_id'];
->>>>>>> pr-2
             ?>';
         <?php }?>
 
@@ -155,11 +151,7 @@ if ($_GET['theme']) {
             for ($i = 0; $i < $total; $i++) {
                 $path=DIR_MODULES.$modules[$i]['NAME'].'/'.$modules[$i]['NAME'].'_widgets.js.php';
                 if (file_exists($path)) {
-<<<<<<< HEAD
-                    echo '"'.ROOTHTML."modules/".$modules[$i]['NAME'].'/'.$modules[$i]['NAME'].'_widgets.js.php?theme='.$_GET['theme'].'",';
-=======
                     echo '"'.ROOTHTML."modules/".$modules[$i]['NAME'].'/'.$modules[$i]['NAME'].'_widgets.js.php?theme='.urlencode($_GET['theme']).'",';
->>>>>>> pr-2
                 }
             }
 

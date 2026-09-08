@@ -124,15 +124,8 @@ while (1) {
             } elseif ($value == $old_value) {
 
                 $tmp_history = SQLSelect("SELECT * FROM $table_name WHERE VALUE_ID='" . $q_rec['VALUE_ID'] . "' ORDER BY ID DESC LIMIT 2");
-<<<<<<< HEAD
-                $prev_value = $tmp_history[0]['VALUE'];
-                if (isset($tmp_history[1]['VALUE']))
-                $prev_prev_value = $tmp_history[1]['VALUE'];
-                //debug_echo(" Done ");
-=======
                 $prev_value = $tmp_history[0]['VALUE'] ?? null;
                 $prev_prev_value = $tmp_history[1]['VALUE'] ?? null;
->>>>>>> pr-2
 
                 $this_source = $q_rec['SOURCE'];
                 $this_source = preg_replace('/\d+/is', 'N', $this_source);
